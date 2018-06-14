@@ -26,7 +26,7 @@ public class PlayerStatsScreen extends ScreenStage {
     private VisTextButton addHealthXp;
     private VisTextButton back;
 
-    private VisLabel xpBank;
+//    private VisLabel xpBank;
     private VisLabel strengthXp;
     private VisLabel healthXp;
 
@@ -38,7 +38,7 @@ public class PlayerStatsScreen extends ScreenStage {
                 + "\nStrength: " + player.getStats().getStrength()
                 + "\nHealth: " + player.getStats().getMaxhealth();
 
-        stats = new VisLabel("Player Stats");
+        stats = new VisLabel("Player Stats [Xp Bank: " + player.getXpBank() + "]");
         stats.setAlignment(Align.center);
 
         xpTable = new VisTable();
@@ -46,7 +46,7 @@ public class PlayerStatsScreen extends ScreenStage {
         addStrengthXp = new VisTextButton("+");
         back = new VisTextButton("Back");
 
-        xpBank = new VisLabel("Xp Bank: " + player.getXpBank());
+//        xpBank = new VisLabel("Xp Bank: " + player.getXpBank());
         healthXp = new VisLabel("Health Xp: " + player.getHealthXpData().getXp());
         strengthXp = new VisLabel("Strength Xp: " + player.getStrengthXpData().getXp());
 
@@ -70,7 +70,7 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, healthExp);
                 player.rewardXp(-1);
 
-                xpBank.setText("Xp Bank: " + player.getXpBank());
+                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
                 healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
 
                 player.getStats().setMaxhealth(player.getHealthXpData().xpToLevel(healthExp));
@@ -80,6 +80,10 @@ public class PlayerStatsScreen extends ScreenStage {
                         + "\nHealth: " + player.getStats().getMaxhealth();
 
                 info.setText(playerInfo);
+                if(player.getXpBank() <= 0){
+                    addHealthXp.setDisabled(true);
+                    addStrengthXp.setDisabled(true);
+                }
             }
         });
 
@@ -97,7 +101,7 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, strengthExp);
                 player.rewardXp(-1);
 
-                xpBank.setText("Xp Bank: " + player.getXpBank());
+                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
                 strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
 
                 player.getStats().setStrength(player.getStrengthXpData().xpToLevel(strengthExp));
@@ -107,6 +111,11 @@ public class PlayerStatsScreen extends ScreenStage {
                         + "\nHealth: " + player.getStats().getMaxhealth();
 
                 info.setText(playerInfo);
+
+                if(player.getXpBank() <= 0){
+                    addHealthXp.setDisabled(true);
+                    addStrengthXp.setDisabled(true);
+                }
             }
         });
 
@@ -117,8 +126,7 @@ public class PlayerStatsScreen extends ScreenStage {
             }
         });
 
-        xpTable.addSeparator();
-        xpTable.add(xpBank).pad(5);
+//        xpTable.add(xpBank).pad(5);
         xpTable.row();
         xpTable.add(healthXp).pad(5);
         xpTable.add(addHealthXp).pad(5);
@@ -130,6 +138,7 @@ public class PlayerStatsScreen extends ScreenStage {
         rootTable.row();
         rootTable.add(statsScroll);
         rootTable.row();
+        rootTable.addSeparator();
         rootTable.add(xpScroll).fillX();
 
         rootTable.row();
@@ -139,14 +148,23 @@ public class PlayerStatsScreen extends ScreenStage {
     @Override
     public void show() {
         super.show();
+
+        if(player.getXpBank() <= 0){
+            addHealthXp.setDisabled(true);
+            addStrengthXp.setDisabled(true);
+        }else{
+            addHealthXp.setDisabled(false);
+            addStrengthXp.setDisabled(false);
+        }
+
         playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
                 + "\nStrength: " + player.getStats().getStrength()
                 + "\nHealth: " + player.getStats().getMaxhealth();
 
-        stats.setText("Player Stats");
+        stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
         info.setText(playerInfo);
 
-        xpBank.setText("Xp Bank: " + player.getXpBank());
+//        xpBank.setText("Xp Bank: " + player.getXpBank());
         healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
         strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
     }

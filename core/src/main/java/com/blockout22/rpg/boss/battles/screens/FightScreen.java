@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
 import com.blockout22.rpg.boss.battles.mobs.Player;
+import com.blockout22.rpg.boss.battles.screens.helper.BackListener;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
@@ -73,6 +74,17 @@ public class FightScreen extends ScreenStage {
         backConfirm.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+//                Color c = dialog.getColor();
+//                c.a = 0;
+//                dialog.setColor(c);
+                dialog.show(getStage());
+            }
+        });
+
+        setOnBackListener(new BackListener() {
+            @Override
+            public void action() {
+                System.out.println("ACTION!!!!");
                 dialog.show(getStage());
             }
         });
@@ -94,6 +106,7 @@ public class FightScreen extends ScreenStage {
         bottomBar.add(backConfirm).expand().right();
 
         VisTextButton back = new VisTextButton("Yes");
+//        dialog.setKeepWithinParent(true);
         dialog.button(back);
         dialog.button("No");
 
@@ -150,6 +163,16 @@ public class FightScreen extends ScreenStage {
                 Statics.setScreen(ms.setText("you gained " + mob.getRewardXp() + " xp"));
             }
         }
+
+        //checks if health is less than 30%
+        if((Float.valueOf(getPlayer().getStats().getCurrentHealth()) / Float.valueOf(getPlayer().getStats().getMaxhealth()) * 100) <= 30){
+            playerHealthLabel.setColor(Color.RED);
+        }
+
+        if((Float.valueOf(mob.getStats().getCurrentHealth()) / Float.valueOf(mob.getStats().getMaxhealth()) * 100) <= 30){
+            mobHealthLabel.setColor(Color.RED);
+        }
+
         mobHealth.setValue(mob.getStats().getCurrentHealth());
         playerHealth.setValue(getPlayer().getStats().getCurrentHealth());
     }

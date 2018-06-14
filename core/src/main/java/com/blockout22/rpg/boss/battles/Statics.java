@@ -75,7 +75,7 @@ public class Statics {
     }
 
     public static void backScreen(){
-        System.out.println(screenHistroy.size);
+//        System.out.println(screenHistroy.size);
         if(screenHistroy.size > 1){
             ScreenStage s = screenHistroy.get(screenHistroy.size - 2);
             screenHistroy.removeIndex(screenHistroy.size - 1);
