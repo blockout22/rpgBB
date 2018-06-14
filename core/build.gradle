@@ -4,5 +4,7 @@ eclipse.project.name = appName + '-core'
 dependencies {
   compile "com.badlogicgames.gdx:gdx:$gdxVersion"
   compile "com.kotcrab.vis:vis-ui:$visUiVersion"
+
+  compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
 }
         

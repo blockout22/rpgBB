@@ -2,7 +2,9 @@ package com.blockout22.rpg.boss.battles.screens.helper;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -15,6 +17,8 @@ public class ScreenStage implements Screen {
     private final Stage stage;
     public final Table rootTable;
     private final Player player;
+
+    private Texture background;
 
     public ScreenStage(Player player){
         this.player = player;
@@ -30,7 +34,9 @@ public class ScreenStage implements Screen {
         rootTable = new Table();
         rootTable.setFillParent(true);
         stage.addActor(rootTable);
-        stage.setDebugAll(true);
+//        stage.setDebugAll(true);
+
+        background = new Texture(Gdx.files.internal(Statics.BACKGROUND_CLOUDS));
     }
 
     public static ExtendViewport getViewport(){
@@ -53,6 +59,10 @@ public class ScreenStage implements Screen {
     @Override
     public void render(float delta) {
         stage.act();
+        stage.getBatch().setProjectionMatrix(viewport.getCamera().combined);
+        stage.getBatch().begin();
+        stage.getBatch().draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldWidth());
+        stage.getBatch().end();
         stage.draw();
     }
 
@@ -77,6 +87,7 @@ public class ScreenStage implements Screen {
 
     @Override
     public void dispose() {
+        background.dispose();
         stage.dispose();
     }
 }

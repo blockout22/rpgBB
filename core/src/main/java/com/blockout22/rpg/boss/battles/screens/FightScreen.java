@@ -5,6 +5,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
@@ -34,12 +35,16 @@ public class FightScreen extends ScreenStage {
     public FightScreen(final Player player, final Mob mob){
         super(player);
         this.mob = mob;
+        player.reset();
+        mob.reset();
+
         bottomBar = new Table();
         mobStack = new Stack();
         playerStack = new Stack();
 
-        mobHealthLabel = new VisLabel("Health Goes here");
-        playerHealthLabel = new VisLabel("Player Health here");
+        mobHealthLabel = new VisLabel(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
+
+        playerHealthLabel = new VisLabel(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
 
         mobName = new VisLabel(mob.getName());
         mobHealth = new VisProgressBar(0, mob.getStats().getMaxhealth(), 0.1f, false);
@@ -75,15 +80,18 @@ public class FightScreen extends ScreenStage {
         mobStack.add(mobHealth);
         mobStack.add(mobHealthLabel);
 
+        mobHealthLabel.setAlignment(Align.center);
+
         playerStack.add(playerHealth);
         playerStack.add(playerHealthLabel);
+        playerHealthLabel.setAlignment(Align.center);
 
         rootTable.add(mobName).top().pad(5).row();
         rootTable.add(mobStack).top().fillX().expand().pad(5).row();
         rootTable.add(playerStack).fillX().pad(5).row();
-        rootTable.add(bottomBar).fillX().pad(5);
-        bottomBar.add(attackButton).center().pad(5);
-        bottomBar.add(backConfirm).expand().right().pad(5);
+        rootTable.add(bottomBar).fillX();
+        bottomBar.add(attackButton).center();
+        bottomBar.add(backConfirm).expand().right();
 
         VisTextButton back = new VisTextButton("Yes");
         dialog.button(back);
@@ -98,9 +106,6 @@ public class FightScreen extends ScreenStage {
 
         lastMobHit = System.currentTimeMillis();
         lastPlayerHit = System.currentTimeMillis();
-
-        player.reset();
-        mob.reset();
     }
 
     @Override

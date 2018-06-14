@@ -45,7 +45,7 @@ public class Player extends Mob{
         long maxhealth_xp = Statics.getPreferences().getLong(Statics.PLAYER_MAX_HEALTH_XP);
         long strength_xp = Statics.getPreferences().getLong(Statics.PLAYER_STRENGTH_XP);
         long speed = Statics.getPreferences().getLong(Statics.PLAYER_SPEED);
-        xpBank = Statics.getPreferences().getLong(Statics.PLAYER_STRENGTH_XP);
+        xpBank = Statics.getPreferences().getLong(Statics.PLAYER_XP_BANK);
 
         healthLevel.setXp(maxhealth_xp);
         strengthLevel.setXp(strength_xp);
@@ -74,7 +74,7 @@ public class Player extends Mob{
         return xpBank;
     }
 
-    class XpData{
+    public class XpData{
         private long threshold = 83;
         private long xp;
         private long level = 1;

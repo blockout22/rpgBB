@@ -40,7 +40,7 @@ public class MainMenuScreen extends ScreenStage {
         });
 
         rootTable.add(play).fillX().pad(5).row();
-        rootTable.add(options).fillX().pad(5).row();
+//        rootTable.add(options).fillX().pad(5).row();
 //        rootTable.add(uiScale).fillX().pad(5).row();
         rootTable.add().expand();
     }

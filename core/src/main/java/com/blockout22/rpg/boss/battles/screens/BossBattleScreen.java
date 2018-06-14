@@ -10,13 +10,13 @@ import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
-public class TrainingScreen extends ScreenStage {
+public class BossBattleScreen extends ScreenStage{
 
     private Table scrollTable;
     private VisScrollPane scrollPane;
     private VisTextButton back;
 
-    public TrainingScreen(final Player player){
+    public BossBattleScreen(final Player player) {
         super(player);
         scrollTable = new Table();
         scrollPane = new VisScrollPane(scrollTable);
@@ -24,12 +24,12 @@ public class TrainingScreen extends ScreenStage {
         scrollPane.layout();
         scrollPane.setFadeScrollBars(false);
 
-        for(int i = 0; i < Statics.trainingMobs.length; i++){
-            final Mob mob = Statics.trainingMobs[i].getMob();
+        for(int i = 0; i < Statics.bossMobs.length; i++){
+            final Mob mob = Statics.bossMobs[i].getMob();
             //check if the user is using the free version
             boolean free = Statics.isFree;
-            VisTextButton t = new VisTextButton(Statics.trainingMobs[i].getMob().getName() + (free && !Statics.trainingMobs[i].isFree() ? " (Paid Version)" : ""));
-            if(free && !Statics.trainingMobs[i].isFree()){
+            VisTextButton t = new VisTextButton(Statics.bossMobs[i].getMob().getName() + (free && !Statics.bossMobs[i].isFree() ? " (Paid Version)" : ""));
+            if(free && !Statics.bossMobs[i].isFree()){
                 t.setDisabled(true);
             }
             VisTextButton tip = new VisTextButton("i");

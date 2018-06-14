@@ -2,7 +2,7 @@ apply plugin: 'android'
 
 android {
   buildToolsVersion '25.0.2'
-  compileSdkVersion 23
+  compileSdkVersion 27
   sourceSets {
     main {
       manifest.srcFile 'AndroidManifest.xml'
@@ -34,20 +34,27 @@ android {
   defaultConfig {
     applicationId 'com.blockout22.rpg.boss.battles'
     minSdkVersion 8
-    targetSdkVersion 23
+    targetSdkVersion 26
   }
 }
 
 configurations { natives }
 
 dependencies {
-    compile project(':core')
-    compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
-    natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
+  compile project(':core')
+  compile "com.badlogicgames.gdx:gdx-backend-android:$gdxVersion"
+  compile "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+   // compile "com.android.billingclient:billing:1.1"
+  natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi"
+  natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-armeabi-v7a"
+  natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-arm64-v8a"
+  natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86"
+  natives "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-x86_64"
+  natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi"
+  natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-armeabi-v7a"
+  natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-arm64-v8a"
+  natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86"
+  natives "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-x86_64"
 }
 
 // Called every time gradle gets executed, takes the native dependencies of

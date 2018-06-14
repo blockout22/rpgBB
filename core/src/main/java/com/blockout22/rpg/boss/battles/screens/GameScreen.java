@@ -33,6 +33,7 @@ public class GameScreen extends ScreenStage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //
+                Statics.setScreen(Statics.BOSS_BATTLE_SCREEN);
             }
         });
 
@@ -40,6 +41,7 @@ public class GameScreen extends ScreenStage {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 //
+                Statics.setScreen(Statics.PLAYER_STATS_SCREEN);
             }
         });
 
