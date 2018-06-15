@@ -84,7 +84,7 @@ public class FightScreen extends ScreenStage {
         setOnBackListener(new BackListener() {
             @Override
             public void action() {
-                System.out.println("ACTION!!!!");
+//                System.out.println("ACTION!!!!");
                 dialog.show(getStage());
             }
         });
@@ -160,7 +160,7 @@ public class FightScreen extends ScreenStage {
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 //go back a screen to prevent player from clicking back onto the fight screen
                 Statics.backScreen();
-                Statics.setScreen(ms.setText("you gained " + mob.getRewardXp() + " xp"));
+                Statics.setScreen(ms.setText("you won!\nyou gained " + mob.getRewardXp() + " xp"));
             }
         }
 

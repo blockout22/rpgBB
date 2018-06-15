@@ -28,13 +28,13 @@ public class ScreenStage implements Screen {
     public ScreenStage(Player player){
         this.player = player;
 
-        if(!Statics.getPreferences().contains(Statics.UI_SCALE)){
-            Statics.getPreferences().putFloat(Statics.UI_SCALE, 3.0f);
-            Statics.getPreferences().flush();
-        }
-
-        float scale = Statics.getPreferences().getFloat(Statics.UI_SCALE);
-//        scale = 3.0f;
+//        if(!Statics.getPreferences().contains(Statics.UI_SCALE)){
+//            Statics.getPreferences().putFloat(Statics.UI_SCALE, 3.0f);
+//            Statics.getPreferences().flush();
+//        }
+//
+//        float scale = Statics.getPreferences().getFloat(Statics.UI_SCALE);
+        float scale = 3.0f;
         viewport = new ExtendViewport(1920 / scale, 1080 / scale);
         stage = new Stage(viewport);
         rootTable = new VisTable();
