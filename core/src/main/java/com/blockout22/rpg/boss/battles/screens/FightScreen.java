@@ -2,11 +2,13 @@ package com.blockout22.rpg.boss.battles.screens;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.blockout22.rpg.boss.battles.FloatingText;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
 import com.blockout22.rpg.boss.battles.mobs.Player;
@@ -32,6 +34,9 @@ public class FightScreen extends ScreenStage {
     private String ATTACK_STRING = "Attack";
 
     private long lastMobHit, lastPlayerHit;
+
+    private boolean mobLowHp = false;
+    private boolean playerLowHp = false;
 
     public FightScreen(final Player player, final Mob mob){
         super(player);
@@ -64,6 +69,11 @@ public class FightScreen extends ScreenStage {
             public void changed(ChangeEvent event, Actor actor) {
                 attackButton.setDisabled(true);
                 long dmg = getPlayer().hit(mob);
+                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : "miss", 1000);
+                t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
+                t.setDeltaY(50);
+                t.animate();
+                getStage().addActor(t);
                 if(dmg > 0){
                     mobHealthLabel.setText(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
                 }
@@ -124,11 +134,18 @@ public class FightScreen extends ScreenStage {
     @Override
     public void render(float delta) {
         super.render(delta);
+//        damageDeltToMob.setPosition(mobHealthLabel.getX() + mobHealthLabel.getPrefWidth(), 0);
 
         if(!mob.isDead() && !getPlayer().isDead()){
             //checks if mob cool down time has passed
             if(TimeUtils.timeSinceMillis(lastMobHit) > mob.getAttackSpeed()){
                 long dmg = mob.hit(getPlayer());
+
+                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : "miss", 1000);
+                t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
+                t.setDeltaY(50);
+                t.animate();
+                getStage().addActor(t);
 
                 if(dmg > 0){
                     playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
@@ -152,10 +169,14 @@ public class FightScreen extends ScreenStage {
 
             if(getPlayer().isDead()){
                 //go back a screen to prevent player from clicking back onto the fight screen
+                playerHealth.clearActions();
+                mobHealth.clearActions();
                 Statics.backScreen();
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 Statics.setScreen(ms.setText("you died!"));
             }else if(mob.isDead()){
+                playerHealth.clearActions();
+                mobHealth.clearActions();
                 getPlayer().rewardXp(mob.getRewardXp());
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 //go back a screen to prevent player from clicking back onto the fight screen
@@ -164,12 +185,57 @@ public class FightScreen extends ScreenStage {
             }
         }
 
+        if(playerLowHp){
+            if(!playerHealth.hasActions()){
+                playerHealth.addAction(Actions.forever(Actions.sequence(
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                playerHealth.setColor(1, 0, 0, 1);
+                            }
+                        }),
+                        Actions.delay(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                playerHealth.setColor(Color.WHITE);
+                            }
+                        }),
+                        Actions.delay(0.5f)
+                )));
+            }
+        }
+
+        if(mobLowHp){
+            if(!mobHealth.hasActions()){
+                mobHealth.addAction(Actions.forever(Actions.sequence(
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                mobHealth.setColor(1, 0, 0, 1);
+                            }
+                        }),
+                        Actions.delay(0.5f),
+                        Actions.run(new Runnable() {
+                            @Override
+                            public void run() {
+                                mobHealth.setColor(Color.WHITE);
+                            }
+                        }),
+                        Actions.delay(0.5f)
+                )));
+            }
+        }
+
+
         //checks if health is less than 30%
         if((Float.valueOf(getPlayer().getStats().getCurrentHealth()) / Float.valueOf(getPlayer().getStats().getMaxhealth()) * 100) <= 30){
+            playerLowHp = true;
             playerHealthLabel.setColor(Color.RED);
         }
 
         if((Float.valueOf(mob.getStats().getCurrentHealth()) / Float.valueOf(mob.getStats().getMaxhealth()) * 100) <= 30){
+            mobLowHp = true;
             mobHealthLabel.setColor(Color.RED);
         }
 

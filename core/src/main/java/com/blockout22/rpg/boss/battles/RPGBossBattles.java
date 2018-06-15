@@ -4,7 +4,9 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.VisUI;
 
@@ -13,6 +15,8 @@ public class RPGBossBattles extends Game {
     private float R;
     private float G;
     private float B;
+
+    private ParticleEffect effect;
 
 	@Override
 	public void create () {
@@ -46,14 +50,28 @@ public class RPGBossBattles extends Game {
 
         System.out.println("R: " + R   + " G: " + G + " B: " + B);
 
+//        effect = new ParticleEffect();
+//        effect.load(Gdx.files.internal("particles/hover"), Gdx.files.internal("particles"));
+//        effect.start();
+//        effect.setPosition(250, 250);
+
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(R, G, B, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(R, G, B, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		super.render();
+        super.render();
+
+//		Statics.GAME_SCREEN.getStage().getBatch().begin();
+//		effect.draw(Statics.GAME_SCREEN.getStage().getBatch(), Gdx.graphics.getDeltaTime());
+//        Statics.GAME_SCREEN.getStage().getBatch().end();
+//
+//        if(effect.isComplete()){
+//            effect.setPosition((float)(Math.random() * 1920 / 3), (float)(Math.random() * 1080 / 3));
+//            effect.reset();
+//        }
 	}
 
     @Override
@@ -73,6 +91,8 @@ public class RPGBossBattles extends Game {
 
     @Override
 	public void dispose () {
+//	    particleAtlas.dispose();
+//	    effect.dispose();
 	    VisUI.dispose();
 	    Statics.dispose();
 	}

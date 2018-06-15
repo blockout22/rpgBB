@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.screens;
 
+import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.blockout22.rpg.boss.battles.Statics;
@@ -57,5 +58,6 @@ public class GameScreen extends ScreenStage {
         rootTable.add(boss).fillX().pad(5).row();
         rootTable.add(playerStats).fillX().pad(5).row();
         rootTable.add(back).expand().bottom().right();
+
     }
 }
