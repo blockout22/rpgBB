@@ -4,6 +4,7 @@ import com.badlogic.gdx.Files.FileType;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.particleeditor.ParticleEditor;
+import com.blockout22.rpg.boss.battles.NameGenerator;
 import com.blockout22.rpg.boss.battles.RPGBossBattles;
 
 import java.awt.EventQueue;
@@ -22,6 +23,8 @@ public class DesktopLauncher {
 //                new ParticleEditor();
 //            }
 //        });
+        String[] name = NameGenerator.getNames(1);
+        System.out.println(name[0]);
         createApplication();
     }
 

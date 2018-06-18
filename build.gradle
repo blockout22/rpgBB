@@ -23,7 +23,7 @@ configure(subprojects - project(':android')) {
 }
 
 subprojects {
-  version = '10'
+  version = '11'
   ext.appName = 'BossBattles'
   repositories {
     mavenLocal()

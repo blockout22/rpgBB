@@ -184,7 +184,7 @@ public class PlayerStatsScreen extends ScreenStage {
 
 //        xpBank.setText("Xp Bank: " + player.getXpBank());
         healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
-        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getHealthXpData().getXp()));
+        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
 //        healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
 //        strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
     }
