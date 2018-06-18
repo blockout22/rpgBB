@@ -17,10 +17,10 @@ public class GameScreen extends ScreenStage {
 
     public GameScreen(Player player){
         super(player);
-        train = new VisTextButton("Train");
-        boss = new VisTextButton("Fight Boss");
-        playerStats = new VisTextButton("Player Stats");
-        back = new VisTextButton("Back");
+        train = new VisTextButton(Statics.getBundle().get("train"));
+        boss = new VisTextButton(Statics.getBundle().get("fightBoss"));
+        playerStats = new VisTextButton(Statics.getBundle().get("playerStats"));
+        back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
         train.addListener(new ChangeListener() {
             @Override

@@ -3,7 +3,9 @@ package com.blockout22.rpg.boss.battles;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.blockout22.rpg.boss.battles.mobs.MobData;
 import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobHallowFalcon;
@@ -18,10 +20,13 @@ import com.blockout22.rpg.boss.battles.screens.TrainingScreen;
 import com.blockout22.rpg.boss.battles.screens.MessageScreen;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
 
+import java.util.Locale;
+
 public class Statics {
 
     private static Game game;
     private static Preferences prefs;
+    private static I18NBundle bundle;
 
     private static Player player;
     public static MobData[] trainingMobs = new MobData[3];
@@ -52,7 +57,11 @@ public class Statics {
     public static void init(Game game){
         Statics.game = game;
         prefs = Gdx.app.getPreferences("userdata");
-        System.out.println(prefs == null);
+
+        FileHandle langFile = Gdx.files.internal("lang/bundle");
+        Locale locale = Locale.FRENCH;
+        bundle = I18NBundle.createBundle(langFile);
+
         screenHistroy = new Array<ScreenStage>();
 
         System.out.println(getPreferences() == null);
@@ -89,6 +98,7 @@ public class Statics {
         screenHistroy.add(screen);
     }
 
+    public static I18NBundle getBundle(){ return bundle; }
     public static Preferences getPreferences(){
         return prefs;
     }

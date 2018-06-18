@@ -22,7 +22,7 @@ public class InfoScreen extends ScreenStage{
         visTitle = new VisLabel(title);
         infoText = new VisLabel();
         scroll = new VisScrollPane(infoText);
-        back = new VisTextButton("Back");
+        back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
         back.addListener(new ChangeListener() {
             @Override

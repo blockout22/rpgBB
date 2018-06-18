@@ -17,7 +17,7 @@ public class MessageScreen extends ScreenStage {
         super(player);
 
         text = new VisLabel();
-        back = new VisTextButton("Back");
+        back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
         back.addListener(new ChangeListener() {
             @Override

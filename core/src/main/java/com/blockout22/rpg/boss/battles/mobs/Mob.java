@@ -1,5 +1,7 @@
 package com.blockout22.rpg.boss.battles.mobs;
 
+import com.blockout22.rpg.boss.battles.Statics;
+
 import java.util.Random;
 
 public abstract class Mob {
@@ -21,8 +23,9 @@ public abstract class Mob {
 
     public void setDefaultInfo()
     {
-        setInfo("Attacks the player every " +  (getAttackSpeed() / 1000) + " seconds hitting a maximum of " + getStats().getStrength() + " and has " + getStats().getMaxhealth() + " Health." +
-                "\nThis mob rewards you with " + getRewardXp() + "xp When killed");
+        setInfo(Statics.getBundle().format("defaultInfo", (getAttackSpeed() / 1000), getStats().getStrength(), getStats().getMaxhealth(), getRewardXp()));
+//        setInfo("Attacks the player every " +  (getAttackSpeed() / 1000) + " seconds hitting a maximum of " + getStats().getStrength() + " and has " + getStats().getMaxhealth() + " Health." +
+//                "\nThis mob rewards you with " + getRewardXp() + "xp When killed");
     }
 
     public void setRewardXp(long rewardXp) {

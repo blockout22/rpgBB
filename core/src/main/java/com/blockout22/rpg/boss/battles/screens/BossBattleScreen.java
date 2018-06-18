@@ -20,7 +20,7 @@ public class BossBattleScreen extends ScreenStage{
         super(player);
         scrollTable = new Table();
         scrollPane = new VisScrollPane(scrollTable);
-        back = new VisTextButton("Back");
+        back = new VisTextButton(Statics.getBundle().get("backScreen"));
         scrollPane.layout();
         scrollPane.setFadeScrollBars(false);
 
@@ -45,7 +45,7 @@ public class BossBattleScreen extends ScreenStage{
             tip.addListener(new ChangeListener() {
                 @Override
                 public void changed(ChangeEvent event, Actor actor) {
-                    Statics.setScreen(new InfoScreen(player, "Information about: " + mob.getName(), mob.getInfo()));
+                    Statics.setScreen(new InfoScreen(player, Statics.getBundle().get("infoabout") + mob.getName(), mob.getInfo()));
                 }
             });
 

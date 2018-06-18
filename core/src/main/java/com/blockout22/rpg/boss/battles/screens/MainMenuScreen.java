@@ -17,8 +17,8 @@ public class MainMenuScreen extends ScreenStage {
 
     public MainMenuScreen(Player player) {
         super(player);
-        play = new VisTextButton("Click To Play");
-        options = new VisTextButton("Options");
+        play = new VisTextButton(Statics.getBundle().get("clickToPlay"));
+        options = new VisTextButton(Statics.getBundle().get("options"));
         uiScale = new VisSlider(0.1f, 10f, 0.1f, false);
         uiScale.setValue(Statics.getPreferences().getFloat(Statics.UI_SCALE));
 

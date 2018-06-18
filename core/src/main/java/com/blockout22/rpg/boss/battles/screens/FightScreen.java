@@ -59,17 +59,17 @@ public class FightScreen extends ScreenStage {
         playerHealth = new VisProgressBar(0, player.getStats().getMaxhealth(), 0.1f, false);
         playerHealth.setValue(player.getStats().getCurrentHealth());
 
-        attackButton = new VisTextButton("Attack");
-        backConfirm = new VisTextButton("Back");
+        attackButton = new VisTextButton(Statics.getBundle().get("attack"));
+        backConfirm = new VisTextButton(Statics.getBundle().get("backScreen"));
 
-        dialog = new VisDialog("Are you sure you want to go back?");
+        dialog = new VisDialog(Statics.getBundle().get("areYouSure"));
 
         attackButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 attackButton.setDisabled(true);
                 long dmg = getPlayer().hit(mob);
-                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : "miss", 1000);
+                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
                 t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
                 t.setDeltaY(50);
                 t.animate();
@@ -115,10 +115,10 @@ public class FightScreen extends ScreenStage {
         bottomBar.add(attackButton).center();
         bottomBar.add(backConfirm).expand().right();
 
-        VisTextButton back = new VisTextButton("Yes");
+        VisTextButton back = new VisTextButton(Statics.getBundle().get("yes"));
 //        dialog.setKeepWithinParent(true);
         dialog.button(back);
-        dialog.button("No");
+        dialog.button(Statics.getBundle().get("no"));
 
         back.addListener(new ChangeListener() {
             @Override
@@ -141,7 +141,7 @@ public class FightScreen extends ScreenStage {
             if(TimeUtils.timeSinceMillis(lastMobHit) > mob.getAttackSpeed()){
                 long dmg = mob.hit(getPlayer());
 
-                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : "miss", 1000);
+                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
                 t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
                 t.setDeltaY(50);
                 t.animate();
@@ -156,7 +156,7 @@ public class FightScreen extends ScreenStage {
 
             if(attackButton.isDisabled()){
                 long t = getPlayer().getAttackSpeed() - (TimeUtils.timeSinceMillis(lastPlayerHit));
-                attackButton.setText(((t / 1000) + 1) + " Seconds");
+                attackButton.setText(((t / 1000) + 1) + " " + Statics.getBundle().get("seconds"));
             }
 
             //checks if players cool down time has passed
@@ -173,7 +173,8 @@ public class FightScreen extends ScreenStage {
                 mobHealth.clearActions();
                 Statics.backScreen();
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
-                Statics.setScreen(ms.setText("you died!"));
+//                Statics.setScreen(ms.setText("you died!"));
+                Statics.setScreen(ms.setText(Statics.getBundle().get("diedText")));
             }else if(mob.isDead()){
                 playerHealth.clearActions();
                 mobHealth.clearActions();
@@ -181,7 +182,8 @@ public class FightScreen extends ScreenStage {
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 //go back a screen to prevent player from clicking back onto the fight screen
                 Statics.backScreen();
-                Statics.setScreen(ms.setText("you won!\nyou gained " + mob.getRewardXp() + " xp"));
+//                Statics.setScreen(ms.setText("you won!\nyou gained " + mob.getRewardXp() + " xp"));
+                Statics.setScreen(ms.setText(Statics.getBundle().format("winText",mob.getRewardXp())));
             }
         }
 

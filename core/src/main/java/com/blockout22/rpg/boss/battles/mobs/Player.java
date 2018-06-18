@@ -24,7 +24,7 @@ public class Player extends Mob{
         }
 
         if(!Statics.getPreferences().contains(Statics.PLAYER_STRENGTH_XP)){
-            Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, 1);
+            Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, 0);
             requiresFlush = true;
         }
 

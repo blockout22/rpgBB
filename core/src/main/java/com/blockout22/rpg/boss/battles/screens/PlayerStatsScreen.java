@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Align;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
+import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisScrollPane;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -34,21 +35,24 @@ public class PlayerStatsScreen extends ScreenStage {
         super(player);
         this.player = player;
 
-        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-                + "\nStrength: " + player.getStats().getStrength()
-                + "\nHealth: " + player.getStats().getMaxhealth();
+//        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
+//                + "\nStrength: " + player.getStats().getStrength()
+//                + "\nHealth: " + player.getStats().getMaxhealth();
 
-        stats = new VisLabel("Player Stats [Xp Bank: " + player.getXpBank() + "]");
+
+//        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+
+        stats = new VisLabel();
         stats.setAlignment(Align.center);
 
         xpTable = new VisTable();
         addHealthXp = new VisTextButton("+");
         addStrengthXp = new VisTextButton("+");
-        back = new VisTextButton("Back");
+        back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
 //        xpBank = new VisLabel("Xp Bank: " + player.getXpBank());
-        healthXp = new VisLabel("Health Xp: " + player.getHealthXpData().getXp());
-        strengthXp = new VisLabel("Strength Xp: " + player.getStrengthXpData().getXp());
+        healthXp = new VisLabel();
+        strengthXp = new VisLabel();
 
         info = new VisLabel(playerInfo);
 
@@ -70,16 +74,22 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, healthExp);
                 player.rewardXp(-1);
 
-                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
-                healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
+//                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
+//                healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
+                healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
 
                 player.getStats().setMaxhealth(player.getHealthXpData().xpToLevel(healthExp));
 
-                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-                        + "\nStrength: " + player.getStats().getStrength()
-                        + "\nHealth: " + player.getStats().getMaxhealth();
+//                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
+//                        + "\nStrength: " + player.getStats().getStrength()
+//                        + "\nHealth: " + player.getStats().getMaxhealth();
 
+//                info.setText(playerInfo);
+
+                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
                 info.setText(playerInfo);
+
                 if(player.getXpBank() <= 0){
                     addHealthXp.setDisabled(true);
                     addStrengthXp.setDisabled(true);
@@ -96,20 +106,26 @@ public class PlayerStatsScreen extends ScreenStage {
 //                    addHealthXp.setDisabled(true);
                     return;
                 }
+
                 strengthExp += 1;
                 player.getStrengthXpData().setXp(strengthExp);
                 Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, strengthExp);
                 player.rewardXp(-1);
 
-                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
-                strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
+//                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
+//                strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
+                strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
 
                 player.getStats().setStrength(player.getStrengthXpData().xpToLevel(strengthExp));
 
-                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-                        + "\nStrength: " + player.getStats().getStrength()
-                        + "\nHealth: " + player.getStats().getMaxhealth();
+//                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
+//                        + "\nStrength: " + player.getStats().getStrength()
+//                        + "\nHealth: " + player.getStats().getMaxhealth();
 
+//                info.setText(playerInfo);
+
+                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
                 info.setText(playerInfo);
 
                 if(player.getXpBank() <= 0){
@@ -157,15 +173,19 @@ public class PlayerStatsScreen extends ScreenStage {
             addStrengthXp.setDisabled(false);
         }
 
-        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-                + "\nStrength: " + player.getStats().getStrength()
-                + "\nHealth: " + player.getStats().getMaxhealth();
+//        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
+//                + "\nStrength: " + player.getStats().getStrength()
+//                + "\nHealth: " + player.getStats().getMaxhealth();
 
-        stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
+        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+        stats.setText(Statics.getBundle().format("title", player.getXpBank()));
         info.setText(playerInfo);
+//        stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
 
 //        xpBank.setText("Xp Bank: " + player.getXpBank());
-        healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
-        strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
+        healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
+        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getHealthXpData().getXp()));
+//        healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
+//        strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
     }
 }
