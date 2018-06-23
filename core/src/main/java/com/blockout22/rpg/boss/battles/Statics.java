@@ -9,8 +9,10 @@ import com.badlogic.gdx.utils.I18NBundle;
 import com.blockout22.rpg.boss.battles.mobs.MobData;
 import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobHallowFalcon;
+import com.blockout22.rpg.boss.battles.mobs.bosses.MobOmegaAfterlife;
 import com.blockout22.rpg.boss.battles.mobs.training.MobRat;
 import com.blockout22.rpg.boss.battles.mobs.training.MobUnicorn;
+import com.blockout22.rpg.boss.battles.mobs.training.MobWorm;
 import com.blockout22.rpg.boss.battles.mobs.training.MobZombie;
 import com.blockout22.rpg.boss.battles.screens.BossBattleScreen;
 import com.blockout22.rpg.boss.battles.screens.GameScreen;
@@ -24,13 +26,16 @@ import java.util.Locale;
 
 public class Statics {
 
+    private static int version = -1;
+    private static boolean versionSet = false;
+
     private static Game game;
     private static Preferences prefs;
     private static I18NBundle bundle;
 
     private static Player player;
-    public static MobData[] trainingMobs = new MobData[3];
-    public static MobData[] bossMobs = new MobData[1];
+    public static MobData[] trainingMobs = new MobData[4];
+    public static MobData[] bossMobs = new MobData[2];
 
     //change this to false for paid version
     public static final boolean isFree = false;
@@ -49,7 +54,9 @@ public class Statics {
 
     public static final String
             PLAYER_MAX_HEALTH_XP = "max-health",
+            PLAYER_ACCURACY_XP = "accuracy",
             PLAYER_STRENGTH_XP = "strength",
+            PLAYER_DODGE_XP = "dodge",
             PLAYER_SPEED = "attack-speed",
             PLAYER_XP_BANK = "xp-bank",
             UI_SCALE = "ui-scale";
@@ -64,14 +71,16 @@ public class Statics {
 
         screenHistroy = new Array<ScreenStage>();
 
-        System.out.println(getPreferences() == null);
+//        System.out.println(getPreferences() == null);
         player = new Player();
 
-        trainingMobs[0] = new MobData(true, new MobRat());
-        trainingMobs[1] = new MobData(true, new MobZombie());
-        trainingMobs[2] = new MobData(false, new MobUnicorn());
+        trainingMobs[0] = new MobData(false, new MobWorm());
+        trainingMobs[1] = new MobData(true, new MobRat());
+        trainingMobs[2] = new MobData(true, new MobZombie());
+        trainingMobs[3] = new MobData(false, new MobUnicorn());
 
         bossMobs[0] = new MobData(true, new MobHallowFalcon());
+        bossMobs[1] = new MobData(false, new MobOmegaAfterlife());
 
         MAIN_MENU = new MainMenuScreen(player);
         GAME_SCREEN = new GameScreen(player);
@@ -96,6 +105,18 @@ public class Statics {
     public static void setScreen(ScreenStage screen){
         game.setScreen(screen);
         screenHistroy.add(screen);
+    }
+
+    public static int getVersion()
+    {
+        return Statics.version;
+    }
+
+    protected static void setVersion(int version){
+        if(!versionSet){
+            Statics.version = version;
+            versionSet = true;
+        }
     }
 
     public static I18NBundle getBundle(){ return bundle; }

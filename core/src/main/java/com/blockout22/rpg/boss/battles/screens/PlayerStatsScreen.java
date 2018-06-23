@@ -23,12 +23,23 @@ public class PlayerStatsScreen extends ScreenStage {
     private String playerInfo;
 
     private VisTable xpTable;
-    private VisTextButton addStrengthXp;
+
     private VisTextButton addHealthXp;
+    private VisTextButton addAccuracyXp;
+    private VisTextButton addStrengthXp;
+    private VisTextButton addDodgeXp;
+
+    private VisTextButton addHealthLevel;
+    private VisTextButton addAccuracyLevel;
+    private VisTextButton addStrengthLevel;
+    private VisTextButton addDodgeLevel;
+
     private VisTextButton back;
 
 //    private VisLabel xpBank;
+    private VisLabel accuracyXp;
     private VisLabel strengthXp;
+    private VisLabel dodgeXp;
     private VisLabel healthXp;
 
     public PlayerStatsScreen(final Player player) {
@@ -47,17 +58,29 @@ public class PlayerStatsScreen extends ScreenStage {
 
         xpTable = new VisTable();
         addHealthXp = new VisTextButton("+");
+        addAccuracyXp = new VisTextButton("+");
         addStrengthXp = new VisTextButton("+");
+        addDodgeXp = new VisTextButton("+");
+
+        String addLevel = Statics.getBundle().get("addLevel");
+        addHealthLevel = new VisTextButton(addLevel);
+        addAccuracyLevel = new VisTextButton(addLevel);
+        addStrengthLevel = new VisTextButton(addLevel);
+        addDodgeLevel = new VisTextButton(addLevel);
+
         back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
 //        xpBank = new VisLabel("Xp Bank: " + player.getXpBank());
         healthXp = new VisLabel();
+        accuracyXp = new VisLabel();
         strengthXp = new VisLabel();
+        dodgeXp = new VisLabel();
 
         info = new VisLabel(playerInfo);
 
         statsScroll = new VisScrollPane(info);
         xpScroll = new VisScrollPane(xpTable);
+        statsScroll.setFadeScrollBars(false);
         xpScroll.setFadeScrollBars(false);
 
         addHealthXp.addListener(new ChangeListener() {
@@ -74,26 +97,89 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, healthExp);
                 player.rewardXp(-1);
 
-//                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
-//                healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
-                healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
+//                healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
+                player.getStats().setMaxhealth(player.getHealthXpData().xpToLevel(healthExp));
+
+//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
+//                info.setText(playerInfo);
+
+                updateInfo();
+                validateButtonStates();
+            }
+        });
+
+        addHealthLevel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long healthExp = player.getHealthXpData().getXp();
+                //the amount of xp required to get to the next level
+                long reqHealthXp = player.getHealthXpData().levelToXp(player.getHealthXpData().getLevel() + 1) - player.getHealthXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank < reqHealthXp){
+                    return;
+                }
+
+                healthExp += reqHealthXp;
+                player.getHealthXpData().setXp(healthExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, healthExp);
+                player.rewardXp(-reqHealthXp);
 
                 player.getStats().setMaxhealth(player.getHealthXpData().xpToLevel(healthExp));
 
-//                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-//                        + "\nStrength: " + player.getStats().getStrength()
-//                        + "\nHealth: " + player.getStats().getMaxhealth();
+                updateInfo();
+                validateButtonStates();
 
-//                info.setText(playerInfo);
+            }
+        });
 
-                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-                info.setText(playerInfo);
-
-                if(player.getXpBank() <= 0){
-                    addHealthXp.setDisabled(true);
-                    addStrengthXp.setDisabled(true);
+        addAccuracyXp.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long accuracyExp = player.getAccuracyXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank <= 0){
+                    return;
                 }
+
+                accuracyExp += 1;
+                player.getAccuracyXpData().setXp(accuracyExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_ACCURACY_XP, accuracyExp);
+                player.rewardXp(-1);
+
+//                accuracyXp.setText(Statics.getBundle().format("accuracyXp", player.getAccuracyXpData().getXp()));
+                player.getStats().setAccuracy(player.getAccuracyXpData().xpToLevel(accuracyExp));
+
+//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
+//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
+//                info.setText(playerInfo);
+                updateInfo();
+
+                validateButtonStates();
+            }
+        });
+
+        addAccuracyLevel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long accExp = player.getAccuracyXpData().getXp();
+                //the amount of xp required to get to the next level
+                long reqAccXp = player.getAccuracyXpData().levelToXp(player.getAccuracyXpData().getLevel() + 1) - player.getAccuracyXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank < reqAccXp){
+                    return;
+                }
+
+                accExp += reqAccXp;
+                player.getAccuracyXpData().setXp(accExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_ACCURACY_XP, accExp);
+                player.rewardXp(-reqAccXp);
+
+                player.getStats().setAccuracy(player.getAccuracyXpData().xpToLevel(accExp));
+
+                updateInfo();
+                validateButtonStates();
+
             }
         });
 
@@ -103,7 +189,6 @@ public class PlayerStatsScreen extends ScreenStage {
                 long strengthExp = player.getStrengthXpData().getXp();
                 long expBank = player.getXpBank();
                 if(expBank <= 0){
-//                    addHealthXp.setDisabled(true);
                     return;
                 }
 
@@ -112,26 +197,90 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, strengthExp);
                 player.rewardXp(-1);
 
-//                stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
-//                strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
-                strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
-
+//                strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
                 player.getStats().setStrength(player.getStrengthXpData().xpToLevel(strengthExp));
 
-//                playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-//                        + "\nStrength: " + player.getStats().getStrength()
-//                        + "\nHealth: " + player.getStats().getMaxhealth();
-
+//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
+//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
 //                info.setText(playerInfo);
 
-                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-                info.setText(playerInfo);
+                updateInfo();
 
-                if(player.getXpBank() <= 0){
-                    addHealthXp.setDisabled(true);
-                    addStrengthXp.setDisabled(true);
+                validateButtonStates();
+            }
+        });
+
+        addStrengthLevel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long strExp = player.getStrengthXpData().getXp();
+                //the amount of xp required to get to the next level
+                long reqStrXp = player.getStrengthXpData().levelToXp(player.getStrengthXpData().getLevel() + 1) - player.getStrengthXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank < reqStrXp){
+                    return;
                 }
+
+                strExp += reqStrXp;
+                player.getStrengthXpData().setXp(strExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, strExp);
+                player.rewardXp(-reqStrXp);
+
+                player.getStats().setStrength(player.getStrengthXpData().xpToLevel(strExp));
+
+                updateInfo();
+                validateButtonStates();
+
+            }
+        });
+
+        addDodgeXp.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long dodgeExp = player.getDodgeXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank <= 0){
+                    return;
+                }
+
+                dodgeExp += 1;
+                player.getDodgeXpData().setXp(dodgeExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_DODGE_XP, dodgeExp);
+                player.rewardXp(-1);
+
+//                dodgeXp.setText(Statics.getBundle().format("dodgeXp", player.getDodgeXpData().getXp()));
+                player.getStats().setDodge(player.getDodgeXpData().xpToLevel(dodgeExp));
+
+//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
+//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
+//                info.setText(playerInfo);
+                updateInfo();
+
+                validateButtonStates();
+            }
+        });
+
+        addDodgeLevel.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                long dodgeExp = player.getDodgeXpData().getXp();
+                //the amount of xp required to get to the next level
+                long reqDodgeXp = player.getDodgeXpData().levelToXp(player.getDodgeXpData().getLevel() + 1) - player.getDodgeXpData().getXp();
+                long expBank = player.getXpBank();
+                if(expBank < reqDodgeXp){
+                    return;
+                }
+
+                dodgeExp += reqDodgeXp;
+                player.getDodgeXpData().setXp(dodgeExp);
+                Statics.getPreferences().putLong(Statics.PLAYER_DODGE_XP, dodgeExp);
+                player.rewardXp(-reqDodgeXp);
+
+                player.getStats().setDodge(player.getDodgeXpData().xpToLevel(dodgeExp));
+
+                updateInfo();
+                validateButtonStates();
+
             }
         });
 
@@ -146,45 +295,119 @@ public class PlayerStatsScreen extends ScreenStage {
         xpTable.row();
         xpTable.add(healthXp).pad(5);
         xpTable.add(addHealthXp).pad(5);
-        xpTable.row();
+        xpTable.add(addHealthLevel).pad(5).row();
+
+        xpTable.add(accuracyXp).pad(5);
+        xpTable.add(addAccuracyXp).pad(5);
+        xpTable.add(addAccuracyLevel).pad(5).row();
+
         xpTable.add(strengthXp).pad(5);
         xpTable.add(addStrengthXp).pad(5);
+        xpTable.add(addStrengthLevel).pad(5).row();
+
+        xpTable.add(dodgeXp).pad(5);
+        xpTable.add(addDodgeXp).pad(5);
+        xpTable.add(addDodgeLevel).pad(5);
 
         rootTable.add(stats).fillX();
         rootTable.row();
-        rootTable.add(statsScroll);
+        rootTable.add(statsScroll).pad(5).fillX();
         rootTable.row();
         rootTable.addSeparator();
-        rootTable.add(xpScroll).fillX();
+        rootTable.add(xpScroll).pad(5).fillX();
 
         rootTable.row();
         rootTable.add(back).expand().bottom().right();
+    }
+
+    private void updateInfo()
+    {
+        healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
+        accuracyXp.setText(Statics.getBundle().format("accuracyXp", player.getAccuracyXpData().getXp()));
+        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
+        dodgeXp.setText(Statics.getBundle().format("dodgeXp", player.getDodgeXpData().getXp()));
+
+        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getMaxhealth(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge());
+        stats.setText(Statics.getBundle().format("title", player.getXpBank()));
+        info.setText(playerInfo);
+    }
+
+    private void validateButtonStates()
+    {
+
+        long healthXp = player.getHealthXpData().levelToXp(player.getHealthXpData().getLevel() + 1) - player.getHealthXpData().getXp();
+        long accXp = player.getAccuracyXpData().levelToXp(player.getAccuracyXpData().getLevel() + 1) - player.getAccuracyXpData().getXp();
+        long strXp = player.getStrengthXpData().levelToXp(player.getStrengthXpData().getLevel() + 1) - player.getStrengthXpData().getXp();
+        long dodgeXp = player.getDodgeXpData().levelToXp(player.getDodgeXpData().getLevel() + 1) - player.getDodgeXpData().getXp();
+        long xpBank = player.getXpBank();
+
+        if(xpBank < healthXp){
+            addHealthLevel.setDisabled(true);
+        }else{
+            addHealthLevel.setDisabled(false);
+        }
+
+        if(xpBank < accXp){
+            addAccuracyLevel.setDisabled(true);
+        }else{
+            addAccuracyLevel.setDisabled(false);
+        }
+
+        if(xpBank < strXp){
+            addStrengthLevel.setDisabled(true);
+        }else{
+            addStrengthLevel.setDisabled(false);
+        }
+
+        if(xpBank < dodgeXp){
+            addDodgeLevel.setDisabled(true);
+        }else{
+            addDodgeLevel.setDisabled(false);
+        }
+
+        if(player.getXpBank() <= 0){
+            addHealthXp.setDisabled(true);
+            addAccuracyXp.setDisabled(true);
+            addStrengthXp.setDisabled(true);
+            addDodgeXp.setDisabled(true);
+        }else{
+            addHealthXp.setDisabled(false);
+            addAccuracyXp.setDisabled(false);
+            addStrengthXp.setDisabled(false);
+            addDodgeXp.setDisabled(false);
+        }
     }
 
     @Override
     public void show() {
         super.show();
 
-        if(player.getXpBank() <= 0){
-            addHealthXp.setDisabled(true);
-            addStrengthXp.setDisabled(true);
-        }else{
-            addHealthXp.setDisabled(false);
-            addStrengthXp.setDisabled(false);
-        }
+        validateButtonStates();
+//        if(player.getXpBank() <= 0){
+//            addHealthXp.setDisabled(true);
+//            addAccuracyXp.setDisabled(true);
+//            addStrengthXp.setDisabled(true);
+//            addDodgeXp.setDisabled(true);
+//        }else{
+//            addHealthXp.setDisabled(false);
+//            addAccuracyXp.setDisabled(false);
+//            addStrengthXp.setDisabled(false);
+//            addDodgeXp.setDisabled(false);
+//        }
 
 //        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
 //                + "\nStrength: " + player.getStats().getStrength()
 //                + "\nHealth: " + player.getStats().getMaxhealth();
 
-        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-        stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-        info.setText(playerInfo);
+//        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
+//        stats.setText(Statics.getBundle().format("title", player.getXpBank()));
+//        info.setText(playerInfo);
+        updateInfo();
 //        stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
 
 //        xpBank.setText("Xp Bank: " + player.getXpBank());
-        healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
-        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
+//        healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
+//        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
 //        healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
 //        strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
     }

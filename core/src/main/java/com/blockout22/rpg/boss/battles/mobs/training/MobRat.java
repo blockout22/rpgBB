@@ -6,7 +6,7 @@ import com.blockout22.rpg.boss.battles.mobs.Stats;
 public class MobRat extends Mob {
 
     public MobRat() {
-        super("Rat", new Stats(5, 2));
+        super("Rat", new Stats(5, 1, 2, 1));
         setAttackSpeed(5000);
         setRewardXp(15);
         setDefaultInfo();

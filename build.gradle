@@ -1,4 +1,7 @@
+def f = file("assets/version")
+def ver = Integer.valueOf(f.text);
 buildscript {
+
   repositories {
     mavenLocal()
     mavenCentral()
@@ -23,7 +26,7 @@ configure(subprojects - project(':android')) {
 }
 
 subprojects {
-  version = '11'
+  version = ver
   ext.appName = 'BossBattles'
   repositories {
     mavenLocal()

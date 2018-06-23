@@ -37,6 +37,8 @@ public class FightScreen extends ScreenStage {
 
     private boolean mobLowHp = false;
     private boolean playerLowHp = false;
+    private long lastPlayerHealth;
+    private long lastMobHealth;
 
     public FightScreen(final Player player, final Mob mob){
         super(player);
@@ -69,14 +71,11 @@ public class FightScreen extends ScreenStage {
             public void changed(ChangeEvent event, Actor actor) {
                 attackButton.setDisabled(true);
                 long dmg = getPlayer().hit(mob);
-                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
-                t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
-                t.setDeltaY(50);
-                t.animate();
-                getStage().addActor(t);
-                if(dmg > 0){
-                    mobHealthLabel.setText(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
+
+                if(dmg <= 0){
+                    playerMissed();
                 }
+
                 lastPlayerHit = System.currentTimeMillis();
             }
         });
@@ -129,6 +128,9 @@ public class FightScreen extends ScreenStage {
 
         lastMobHit = System.currentTimeMillis();
         lastPlayerHit = System.currentTimeMillis();
+
+        lastPlayerHealth = getPlayer().getStats().getCurrentHealth();
+        lastMobHealth = mob.getStats().getCurrentHealth();
     }
 
     @Override
@@ -137,21 +139,25 @@ public class FightScreen extends ScreenStage {
 //        damageDeltToMob.setPosition(mobHealthLabel.getX() + mobHealthLabel.getPrefWidth(), 0);
 
         if(!mob.isDead() && !getPlayer().isDead()){
-            //checks if mob cool down time has passed
-            if(TimeUtils.timeSinceMillis(lastMobHit) > mob.getAttackSpeed()){
-                long dmg = mob.hit(getPlayer());
+            if(mob.getAttackSpeed() > 0) {
+                //checks if mob cool down time has passed
+                if (TimeUtils.timeSinceMillis(lastMobHit) > mob.getAttackSpeed()) {
+                    long dmg = mob.hit(getPlayer());
+                    if(dmg <= 0){
+                        mobMissed();
+                    }
+//                    FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
+//                    t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
+//                    t.setDeltaY(50);
+//                    t.animate();
+//                    getStage().addActor(t);
+//
+//                    if (dmg > 0) {
+//                        playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+//                    }
 
-                FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
-                t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
-                t.setDeltaY(50);
-                t.animate();
-                getStage().addActor(t);
-
-                if(dmg > 0){
-                    playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+                    lastMobHit = System.currentTimeMillis();
                 }
-
-                lastMobHit = System.currentTimeMillis();
             }
 
             if(attackButton.isDisabled()){
@@ -241,7 +247,67 @@ public class FightScreen extends ScreenStage {
             mobHealthLabel.setColor(Color.RED);
         }
 
-        mobHealth.setValue(mob.getStats().getCurrentHealth());
-        playerHealth.setValue(getPlayer().getStats().getCurrentHealth());
+        if(lastPlayerHealth > getPlayer().getStats().getCurrentHealth()){
+            playerHealth.setValue(getPlayer().getStats().getCurrentHealth());
+
+            playerHealthChanged();
+
+            lastPlayerHealth = getPlayer().getStats().getCurrentHealth();
+        }
+
+        if(lastMobHealth > mob.getStats().getCurrentHealth()){
+            mobHealth.setValue(mob.getStats().getCurrentHealth());
+
+            mobHealthChanged();
+
+            lastMobHealth = mob.getStats().getCurrentHealth();
+        }
+
+    }
+
+    //displays missed icon on the mobs health when the player hits a 0
+    private void playerMissed(){
+        FloatingText t = new FloatingText(Statics.getBundle().get("missed"), 1000);
+        t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
+        t.setDeltaY(50);
+        t.animate();
+        getStage().addActor(t);
+    }
+
+    //displays missed icon on the players health when the mob hits a 0;
+    private void mobMissed(){
+        FloatingText t = new FloatingText(Statics.getBundle().get("missed"), 1000);
+        t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
+        t.setDeltaY(50);
+        t.animate();
+        getStage().addActor(t);
+    }
+
+    private void playerHealthChanged(){
+        long dmg = lastPlayerHealth - getPlayer().getStats().getCurrentHealth();
+
+        FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
+        t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
+        t.setDeltaY(50);
+        t.animate();
+        getStage().addActor(t);
+
+        if (dmg > 0) {
+            playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+        }
+    }
+
+    private void mobHealthChanged()
+    {
+        long dmg = lastMobHealth - mob.getStats().getCurrentHealth();
+
+        FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
+        t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
+        t.setDeltaY(50);
+        t.animate();
+        getStage().addActor(t);
+        if(dmg > 0){
+            mobHealthLabel.setText(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
+        }
     }
 }

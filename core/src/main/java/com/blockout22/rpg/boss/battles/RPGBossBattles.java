@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.kotcrab.vis.ui.VisUI;
 
@@ -18,6 +19,11 @@ public class RPGBossBattles extends Game {
 
     private ParticleEffect effect;
 
+    public RPGBossBattles(int version){
+        Statics.setVersion(version);
+    }
+
+
 	@Override
 	public void create () {
 
@@ -26,6 +32,13 @@ public class RPGBossBattles extends Game {
 
 
         Skin skin = new Skin(VisUI.SkinScale.X2.getSkinFile());
+        System.out.println(Gdx.app.getVersion());
+
+//        freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
+//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+//        parameter.size = 70;
+//        BitmapFont font = freeTypeFontGenerator.generateFont(parameter);
+//        skin.add("default-font", font, BitmapFont.class);
 //        System.out.println(skin.getFont("small-font"));
 //        System.out.println(skin.getFont("default-font"));
 //        skin.remove("small-font", BitmapFont.class);
@@ -48,7 +61,7 @@ public class RPGBossBattles extends Game {
         G = (float)Math.random();
         B = (float)Math.random();
 
-        System.out.println("R: " + R   + " G: " + G + " B: " + B);
+//        System.out.println("R: " + R   + " G: " + G + " B: " + B);
 
 //        effect = new ParticleEffect();
 //        effect.load(Gdx.files.internal("particles/hover"), Gdx.files.internal("particles"));

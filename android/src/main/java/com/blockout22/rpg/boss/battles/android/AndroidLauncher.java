@@ -1,5 +1,7 @@
 package com.blockout22.rpg.boss.battles.android;
 
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
@@ -16,7 +18,14 @@ public class AndroidLauncher extends AndroidApplication {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AndroidApplicationConfiguration configuration = new AndroidApplicationConfiguration();
-        initialize(new RPGBossBattles(), configuration);
+        PackageInfo i = null;
+        try {
+            i = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        initialize(new RPGBossBattles(i != null ? i.versionCode : -1), configuration);
 
 //        billingClient = BillingClient.newBuilder(this).setListener(new PurchasesUpdatedListener() {
 //            @Override
