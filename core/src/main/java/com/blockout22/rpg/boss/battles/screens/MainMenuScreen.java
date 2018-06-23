@@ -44,8 +44,15 @@ public class MainMenuScreen extends ScreenStage {
             }
         });
 
+        options.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Statics.setScreen(Statics.OPTIONS_SCREEN);
+            }
+        });
+
         rootTable.add(play).fillX().pad(5).row();
-//        rootTable.add(options).fillX().pad(5).row();
+        rootTable.add(options).fillX().pad(5).row();
 //        rootTable.add(uiScale).fillX().pad(5).row();
         rootTable.add(version).pad(5).bottom().left().expand();
 //        rootTable.add().expand();

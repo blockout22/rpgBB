@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.screens;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
@@ -29,6 +30,8 @@ public class FightScreen extends ScreenStage {
     private VisTextButton attackButton, backConfirm;
     private VisDialog dialog;
 
+    private boolean canVibrate = false;
+
     private Stack mobStack, playerStack;
 
     private String ATTACK_STRING = "Attack";
@@ -45,6 +48,8 @@ public class FightScreen extends ScreenStage {
         this.mob = mob;
         player.reset();
         mob.reset();
+
+        canVibrate = Statics.getPreferences().getBoolean(Statics.PLAYER_VIRBRATE_DAMAGE);
 
         bottomBar = new Table();
         mobStack = new Stack();
@@ -247,7 +252,11 @@ public class FightScreen extends ScreenStage {
             mobHealthLabel.setColor(Color.RED);
         }
 
+        //checks if the player just lost some health
         if(lastPlayerHealth > getPlayer().getStats().getCurrentHealth()){
+            if(canVibrate){
+                Gdx.input.vibrate(100);
+            }
             playerHealth.setValue(getPlayer().getStats().getCurrentHealth());
 
             playerHealthChanged();
@@ -255,6 +264,7 @@ public class FightScreen extends ScreenStage {
             lastPlayerHealth = getPlayer().getStats().getCurrentHealth();
         }
 
+        //checks if the mob just lost some health
         if(lastMobHealth > mob.getStats().getCurrentHealth()){
             mobHealth.setValue(mob.getStats().getCurrentHealth());
 

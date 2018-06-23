@@ -129,7 +129,6 @@ public class PlayerStatsScreen extends ScreenStage {
 
                 updateInfo();
                 validateButtonStates();
-
             }
         });
 
@@ -292,7 +291,6 @@ public class PlayerStatsScreen extends ScreenStage {
         });
 
 //        xpTable.add(xpBank).pad(5);
-        xpTable.row();
         xpTable.add(healthXp).pad(5);
         xpTable.add(addHealthXp).pad(5);
         xpTable.add(addHealthLevel).pad(5).row();
@@ -309,16 +307,76 @@ public class PlayerStatsScreen extends ScreenStage {
         xpTable.add(addDodgeXp).pad(5);
         xpTable.add(addDodgeLevel).pad(5);
 
+        boolean statView = Statics.getPreferences().getBoolean(Statics.PLAYER_STATS_UI_ORIENTATION);
+
+        if(!statView){
+            setHorizontal();
+        }else{
+            setVertical();
+        }
+
+//        setHorizontal();
+//        setVertical();
+//        xpTable.row();
+//        xpTable.add(healthXp).pad(5);
+//        xpTable.add(addHealthXp).pad(5);
+//        xpTable.add(addHealthLevel).pad(5).row();
+//
+//        xpTable.add(accuracyXp).pad(5);
+//        xpTable.add(addAccuracyXp).pad(5);
+//        xpTable.add(addAccuracyLevel).pad(5).row();
+//
+//        xpTable.add(strengthXp).pad(5);
+//        xpTable.add(addStrengthXp).pad(5);
+//        xpTable.add(addStrengthLevel).pad(5).row();
+//
+//        xpTable.add(dodgeXp).pad(5);
+//        xpTable.add(addDodgeXp).pad(5);
+//        xpTable.add(addDodgeLevel).pad(5);
+//
+//        rootTable.add(stats).fillX();
+//        rootTable.row();
+//        rootTable.add(statsScroll).pad(5).fillX();
+//        rootTable.row();
+//        rootTable.addSeparator();
+//        rootTable.add(xpScroll).pad(5).fillX();
+
+//        rootTable.row();
+//        rootTable.add(back).bottom().right();
+//        rootTable.debugAll();
+    }
+
+    private void setHorizontal() {
+        rootTable.clearChildren();
+
         rootTable.add(stats).fillX();
         rootTable.row();
+
         rootTable.add(statsScroll).pad(5).fillX();
         rootTable.row();
         rootTable.addSeparator();
         rootTable.add(xpScroll).pad(5).fillX();
 
         rootTable.row();
-        rootTable.add(back).expand().bottom().right();
+        rootTable.add(back).bottom().right();
     }
+
+    private void setVertical()
+    {
+        rootTable.clearChildren();
+        rootTable.add(stats).fillX();
+        rootTable.row();
+
+        VisTable t = new VisTable();
+        rootTable.add(t).grow();
+        t.add(statsScroll).fillY();
+        t.addSeparator(true);
+        t.add(xpScroll).fillY();
+
+        rootTable.row();
+        rootTable.add(back).bottom().right();
+    }
+
 
     private void updateInfo()
     {
@@ -334,7 +392,6 @@ public class PlayerStatsScreen extends ScreenStage {
 
     private void validateButtonStates()
     {
-
         long healthXp = player.getHealthXpData().levelToXp(player.getHealthXpData().getLevel() + 1) - player.getHealthXpData().getXp();
         long accXp = player.getAccuracyXpData().levelToXp(player.getAccuracyXpData().getLevel() + 1) - player.getAccuracyXpData().getXp();
         long strXp = player.getStrengthXpData().levelToXp(player.getStrengthXpData().getLevel() + 1) - player.getStrengthXpData().getXp();

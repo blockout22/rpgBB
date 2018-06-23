@@ -3,6 +3,8 @@
     package="com.blockout22.rpg.boss.battles"
     android:versionName="1.0" >
 
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="26" />
     <application

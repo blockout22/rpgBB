@@ -17,6 +17,7 @@ import com.blockout22.rpg.boss.battles.mobs.training.MobZombie;
 import com.blockout22.rpg.boss.battles.screens.BossBattleScreen;
 import com.blockout22.rpg.boss.battles.screens.GameScreen;
 import com.blockout22.rpg.boss.battles.screens.MainMenuScreen;
+import com.blockout22.rpg.boss.battles.screens.OptionsScreen;
 import com.blockout22.rpg.boss.battles.screens.PlayerStatsScreen;
 import com.blockout22.rpg.boss.battles.screens.TrainingScreen;
 import com.blockout22.rpg.boss.battles.screens.MessageScreen;
@@ -46,6 +47,7 @@ public class Statics {
 
     public static ScreenStage
             MAIN_MENU,
+            OPTIONS_SCREEN,
             GAME_SCREEN,
             TRAINING_SCREEN,
             MESSAGE_SCREEN,
@@ -59,11 +61,15 @@ public class Statics {
             PLAYER_DODGE_XP = "dodge",
             PLAYER_SPEED = "attack-speed",
             PLAYER_XP_BANK = "xp-bank",
-            UI_SCALE = "ui-scale";
+            UI_SCALE = "ui-scale",
+            PLAYER_STATS_UI_ORIENTATION = "stats-orientation",
+            PLAYER_VIRBRATE_DAMAGE = "vibrate-damage";
 
     public static void init(Game game){
         Statics.game = game;
         prefs = Gdx.app.getPreferences("userdata");
+
+        setupPreferences();
 
         FileHandle langFile = Gdx.files.internal("lang/bundle");
         Locale locale = Locale.FRENCH;
@@ -83,6 +89,7 @@ public class Statics {
         bossMobs[1] = new MobData(false, new MobOmegaAfterlife());
 
         MAIN_MENU = new MainMenuScreen(player);
+        OPTIONS_SCREEN = new OptionsScreen(player);
         GAME_SCREEN = new GameScreen(player);
         TRAINING_SCREEN = new TrainingScreen(player);
         MESSAGE_SCREEN = new MessageScreen(player);
@@ -90,6 +97,46 @@ public class Statics {
         BOSS_BATTLE_SCREEN = new BossBattleScreen(player);
 
         setScreen(MAIN_MENU);
+    }
+
+    private static void setupPreferences()
+    {
+        if(!Statics.getPreferences().contains(Statics.PLAYER_VIRBRATE_DAMAGE)){
+            Statics.getPreferences().putBoolean(Statics.PLAYER_VIRBRATE_DAMAGE, true);
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_STATS_UI_ORIENTATION)){
+            Statics.getPreferences().putBoolean(Statics.PLAYER_STATS_UI_ORIENTATION, false);
+        }
+
+        //checks if value exists, if false then create it
+        if (!Statics.getPreferences().contains(Statics.PLAYER_MAX_HEALTH_XP)) {
+            XpData tmp = new XpData();
+            Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, tmp.levelToXp(10));
+            tmp = null;
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_ACCURACY_XP)){
+            Statics.getPreferences().putLong(Statics.PLAYER_ACCURACY_XP, 0);
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_STRENGTH_XP)){
+            Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, 0);
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_DODGE_XP)){
+            Statics.getPreferences().putLong(Statics.PLAYER_DODGE_XP, 0);
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_SPEED)){
+            Statics.getPreferences().putLong(Statics.PLAYER_SPEED, 5000);
+        }
+
+        if(!Statics.getPreferences().contains(Statics.PLAYER_XP_BANK)){
+            Statics.getPreferences().putLong(Statics.PLAYER_XP_BANK, 0);
+        }
+
+        Statics.getPreferences().flush();
     }
 
     public static void backScreen(){
