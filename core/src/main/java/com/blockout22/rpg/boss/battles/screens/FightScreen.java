@@ -88,9 +88,6 @@ public class FightScreen extends ScreenStage {
         backConfirm.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
-//                Color c = dialog.getColor();
-//                c.a = 0;
-//                dialog.setColor(c);
                 dialog.show(getStage());
             }
         });
@@ -98,7 +95,6 @@ public class FightScreen extends ScreenStage {
         setOnBackListener(new BackListener() {
             @Override
             public void action() {
-//                System.out.println("ACTION!!!!");
                 dialog.show(getStage());
             }
         });
@@ -141,7 +137,6 @@ public class FightScreen extends ScreenStage {
     @Override
     public void render(float delta) {
         super.render(delta);
-//        damageDeltToMob.setPosition(mobHealthLabel.getX() + mobHealthLabel.getPrefWidth(), 0);
 
         if(!mob.isDead() && !getPlayer().isDead()){
             if(mob.getAttackSpeed() > 0) {
@@ -151,16 +146,6 @@ public class FightScreen extends ScreenStage {
                     if(dmg <= 0){
                         mobMissed();
                     }
-//                    FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
-//                    t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
-//                    t.setDeltaY(50);
-//                    t.animate();
-//                    getStage().addActor(t);
-//
-//                    if (dmg > 0) {
-//                        playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
-//                    }
-
                     lastMobHit = System.currentTimeMillis();
                 }
             }
@@ -184,7 +169,6 @@ public class FightScreen extends ScreenStage {
                 mobHealth.clearActions();
                 Statics.backScreen();
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
-//                Statics.setScreen(ms.setText("you died!"));
                 Statics.setScreen(ms.setText(Statics.getBundle().get("diedText")));
             }else if(mob.isDead()){
                 playerHealth.clearActions();
@@ -193,7 +177,6 @@ public class FightScreen extends ScreenStage {
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 //go back a screen to prevent player from clicking back onto the fight screen
                 Statics.backScreen();
-//                Statics.setScreen(ms.setText("you won!\nyou gained " + mob.getRewardXp() + " xp"));
                 Statics.setScreen(ms.setText(Statics.getBundle().format("winText",mob.getRewardXp())));
             }
         }

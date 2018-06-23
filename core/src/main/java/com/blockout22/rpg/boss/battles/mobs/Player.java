@@ -41,8 +41,6 @@ public class Player extends Mob{
         this.getStats().setMaxhealth(healthLevel.getLevel());
         this.getStats().setCurrentHealth(getStats().getMaxhealth());
         setAttackSpeed(speed);
-
-//        System.err.println(accuracyLevel.levelToXp(1) + "£" + accuracyLevel.levelToXp(2) + " : " + accuracyLevel.levelToXp(3));
     }
 
     public XpData getStrengthXpData(){
@@ -62,6 +60,9 @@ public class Player extends Mob{
     }
 
     public void rewardXp(long xp){
+        if(xp > 0 && xpBank >= 999999999999999999l){
+            return;
+        }
         xpBank += xp;
         Statics.getPreferences().putLong(Statics.PLAYER_XP_BANK, xpBank);
         Statics.getPreferences().flush();

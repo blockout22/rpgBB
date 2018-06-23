@@ -32,8 +32,6 @@ public abstract class Mob {
         }else{
             setInfo(Statics.getBundle().format("defaultInfoNoAttack", getStats().getMaxhealth(), getRewardXp()));
         }
-//        setInfo("Attacks the player every " +  (getAttackSpeed() / 1000) + " seconds hitting a maximum of " + getStats().getStrength() + " and has " + getStats().getMaxhealth() + " Health." +
-//                "\nThis mob rewards you with " + getRewardXp() + "xp When killed");
     }
 
     public void setRewardXp(long rewardXp) {
@@ -57,7 +55,7 @@ public abstract class Mob {
         float dod = other.getStats().getDodge();
         float chance = acc / (acc+dod);
 
-        double m = Math.random();
+        float m = r.nextFloat();
 
         long damage = 0;
         if(!this.isDead){

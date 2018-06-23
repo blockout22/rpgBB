@@ -7,6 +7,7 @@ import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import com.badlogic.gdx.tools.particleeditor.ParticleEditor;
 import com.blockout22.rpg.boss.battles.NameGenerator;
 import com.blockout22.rpg.boss.battles.RPGBossBattles;
+import com.blockout22.rpg.boss.battles.XpData;
 
 import java.awt.EventQueue;
 import java.io.BufferedReader;
@@ -16,34 +17,14 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
+import java.text.DecimalFormat;
 
 import javax.swing.UIManager;
 
 /** Launches the desktop (LWJGL) application. */
 public class DesktopLauncher {
     public static void main(String[] args) {
-//        try{
-//            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-//        }catch(Exception e){}
-//        EventQueue.invokeLater(new Runnable() {
-//            @Override
-//            public void run() {
-//                new ParticleEditor();
-//            }
-//        });
-//        String[] name = NameGenerator.getNames(2160, true);
-//        for(String s : name)
-//        System.out.println(s);
-//
-//        float Accuracy = 101;
-//        float Strength = 1000;
-//        float DodgeChance = 10;
-//        float Hitchance = ((Accuracy - DodgeChance)/Accuracy)*100;
-//
-//        float damage = Strength * Strength / (Strength + DodgeChance);
-//        System.out.println("Damage: " + damage);
-//        System.out.println(Hitchance);
-
         createApplication();
     }
 

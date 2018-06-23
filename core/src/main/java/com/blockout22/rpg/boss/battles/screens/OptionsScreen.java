@@ -1,5 +1,7 @@
 package com.blockout22.rpg.boss.battles.screens;
 
+import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Event;
 import com.badlogic.gdx.scenes.scene2d.EventListener;
@@ -50,13 +52,14 @@ public class OptionsScreen extends ScreenStage{
             }
         });
 
-//        scrollTable.add().expand();
-        scrollTable.add(damageVibrateLabel);
-        scrollTable.add(damageVibrate);
+        if(Gdx.app.getType() != Application.ApplicationType.Desktop) {
+            scrollTable.add(damageVibrateLabel);
+            scrollTable.add(damageVibrate);
+        }
+
         rootTable.add(title).pad(5).row();
         rootTable.addSeparator();
         rootTable.add(scrollPane).row();
-//        rootTable.add(damageVibrate).pad(5).row();
         rootTable.add(back).expand().bottom().right();
     }
 }

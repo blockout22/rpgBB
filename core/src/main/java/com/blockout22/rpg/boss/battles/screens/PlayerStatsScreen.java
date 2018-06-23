@@ -46,14 +46,8 @@ public class PlayerStatsScreen extends ScreenStage {
         super(player);
         this.player = player;
 
-//        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-//                + "\nStrength: " + player.getStats().getStrength()
-//                + "\nHealth: " + player.getStats().getMaxhealth();
-
-
-//        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-
         stats = new VisLabel();
+        stats.setWrap(true);
         stats.setAlignment(Align.center);
 
         xpTable = new VisTable();
@@ -97,12 +91,7 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, healthExp);
                 player.rewardXp(-1);
 
-//                healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
                 player.getStats().setMaxhealth(player.getHealthXpData().xpToLevel(healthExp));
-
-//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-//                info.setText(playerInfo);
 
                 updateInfo();
                 validateButtonStates();
@@ -146,14 +135,9 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_ACCURACY_XP, accuracyExp);
                 player.rewardXp(-1);
 
-//                accuracyXp.setText(Statics.getBundle().format("accuracyXp", player.getAccuracyXpData().getXp()));
                 player.getStats().setAccuracy(player.getAccuracyXpData().xpToLevel(accuracyExp));
 
-//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
-//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-//                info.setText(playerInfo);
                 updateInfo();
-
                 validateButtonStates();
             }
         });
@@ -196,15 +180,9 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_STRENGTH_XP, strengthExp);
                 player.rewardXp(-1);
 
-//                strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
                 player.getStats().setStrength(player.getStrengthXpData().xpToLevel(strengthExp));
 
-//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
-//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-//                info.setText(playerInfo);
-
                 updateInfo();
-
                 validateButtonStates();
             }
         });
@@ -247,14 +225,9 @@ public class PlayerStatsScreen extends ScreenStage {
                 Statics.getPreferences().putLong(Statics.PLAYER_DODGE_XP, dodgeExp);
                 player.rewardXp(-1);
 
-//                dodgeXp.setText(Statics.getBundle().format("dodgeXp", player.getDodgeXpData().getXp()));
                 player.getStats().setDodge(player.getDodgeXpData().xpToLevel(dodgeExp));
 
-//                playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getAccuracy(), player.getStats().getStrength(), player.getStats().getDodge(), player.getStats().getMaxhealth());
-//                stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-//                info.setText(playerInfo);
                 updateInfo();
-
                 validateButtonStates();
             }
         });
@@ -314,36 +287,6 @@ public class PlayerStatsScreen extends ScreenStage {
         }else{
             setVertical();
         }
-
-//        setHorizontal();
-//        setVertical();
-//        xpTable.row();
-//        xpTable.add(healthXp).pad(5);
-//        xpTable.add(addHealthXp).pad(5);
-//        xpTable.add(addHealthLevel).pad(5).row();
-//
-//        xpTable.add(accuracyXp).pad(5);
-//        xpTable.add(addAccuracyXp).pad(5);
-//        xpTable.add(addAccuracyLevel).pad(5).row();
-//
-//        xpTable.add(strengthXp).pad(5);
-//        xpTable.add(addStrengthXp).pad(5);
-//        xpTable.add(addStrengthLevel).pad(5).row();
-//
-//        xpTable.add(dodgeXp).pad(5);
-//        xpTable.add(addDodgeXp).pad(5);
-//        xpTable.add(addDodgeLevel).pad(5);
-//
-//        rootTable.add(stats).fillX();
-//        rootTable.row();
-//        rootTable.add(statsScroll).pad(5).fillX();
-//        rootTable.row();
-//        rootTable.addSeparator();
-//        rootTable.add(xpScroll).pad(5).fillX();
-
-//        rootTable.row();
-//        rootTable.add(back).bottom().right();
-//        rootTable.debugAll();
     }
 
     private void setHorizontal() {
@@ -440,32 +383,6 @@ public class PlayerStatsScreen extends ScreenStage {
         super.show();
 
         validateButtonStates();
-//        if(player.getXpBank() <= 0){
-//            addHealthXp.setDisabled(true);
-//            addAccuracyXp.setDisabled(true);
-//            addStrengthXp.setDisabled(true);
-//            addDodgeXp.setDisabled(true);
-//        }else{
-//            addHealthXp.setDisabled(false);
-//            addAccuracyXp.setDisabled(false);
-//            addStrengthXp.setDisabled(false);
-//            addDodgeXp.setDisabled(false);
-//        }
-
-//        playerInfo = "Attacking Speed: " + player.getAttackSpeed() + " ms"
-//                + "\nStrength: " + player.getStats().getStrength()
-//                + "\nHealth: " + player.getStats().getMaxhealth();
-
-//        playerInfo = Statics.getBundle().format("playerInfo", player.getAttackSpeed(), player.getStats().getStrength(), player.getStats().getMaxhealth());
-//        stats.setText(Statics.getBundle().format("title", player.getXpBank()));
-//        info.setText(playerInfo);
         updateInfo();
-//        stats.setText("Player Stats [Xp Bank: " + player.getXpBank() + "]");
-
-//        xpBank.setText("Xp Bank: " + player.getXpBank());
-//        healthXp.setText(Statics.getBundle().format("healthXp", player.getHealthXpData().getXp()));
-//        strengthXp.setText(Statics.getBundle().format("strengthXp", player.getStrengthXpData().getXp()));
-//        healthXp.setText("Health Xp: " + player.getHealthXpData().getXp());
-//        strengthXp.setText("Strength Xp: " + player.getStrengthXpData().getXp());
     }
 }
