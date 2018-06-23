@@ -29,32 +29,8 @@ public class RPGBossBattles extends Game {
 
 	    //stop the back key doing anything (prevents some glitches in Libgdx)
 	    Gdx.input.setCatchBackKey(true);
-
-
         Skin skin = new Skin(VisUI.SkinScale.X2.getSkinFile());
-        System.out.println(Gdx.app.getVersion());
-
-//        freeTypeFontGenerator = new FreeTypeFontGenerator(Gdx.files.internal("font.ttf"));
-//        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-//        parameter.size = 70;
-//        BitmapFont font = freeTypeFontGenerator.generateFont(parameter);
-//        skin.add("default-font", font, BitmapFont.class);
-//        System.out.println(skin.getFont("small-font"));
-//        System.out.println(skin.getFont("default-font"));
-//        skin.remove("small-font", BitmapFont.class);
-//        skin.remove("default-font", BitmapFont.class);
-//        System.out.println(skin.getFont("small-font"));
-//        System.out.println(skin.getFont("default-font"));
-//        BitmapFont newFont = new BitmapFont(Gdx.files.internal("skins/fonts/custom.fnt"));
-//        skin.add("default-font", newFont, BitmapFont.class);
-//        skin.add("small-font", newFont, BitmapFont.class);
-//        System.out.println(skin.getFont("small-font"));
-//        System.out.println(skin.getFont("default-font"));
-
         VisUI.load(skin);
-
-//        System.out.println(VisUI.getSkin().getFont("default-font"));
-
         Statics.init(this);
 
         R = (float)Math.random();
