@@ -65,6 +65,11 @@ public class ScreenStage implements Screen {
         return player;
     }
 
+    public void setBackground(Texture background) {
+        this.background.dispose();
+        this.background = background;
+    }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(stage);

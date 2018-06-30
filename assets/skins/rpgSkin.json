@@ -1,0 +1,119 @@
+{
+com.badlogic.gdx.graphics.g2d.BitmapFont: {
+	Press: {
+		file: Press.fnt
+	}
+}
+com.kotcrab.vis.ui.Sizes: {
+	default: {
+		scaleFactor: 1
+		spacingBottom: 8
+		spacingRight: 6
+		buttonBarSpacing: 10
+		menuItemIconSize: 22
+		borderSize: 1
+		spinnerButtonHeight: 12
+		spinnerFieldSize: 50
+		fileChooserViewModeBigIconsSize: 200
+		fileChooserViewModeMediumIconsSize: 128
+		fileChooserViewModeSmallIconsSize: 64
+		fileChooserViewModeListWidthSize: 150
+	}
+}
+com.kotcrab.vis.ui.widget.VisTextButton$VisTextButtonStyle: {
+	default: {
+		down: blue
+		up: background_grey
+		font: Press
+	}
+}
+com.kotcrab.vis.ui.widget.VisCheckBox$VisCheckBoxStyle: {
+	default: {
+		font: Press
+		checked: blue
+	}
+}
+com.kotcrab.vis.ui.widget.Separator$SeparatorStyle: {
+	default: {
+		thickness: 4
+	}
+	menu: {
+		thickness: 1
+	}
+}
+com.kotcrab.vis.ui.widget.tabbedpane.TabbedPane$TabbedPaneStyle: {
+	default: {
+		vertical: false
+		draggable: false
+	}
+}
+com.kotcrab.vis.ui.widget.BusyBar$BusyBarStyle: {
+	default: {
+		height: 5
+		segmentWidth: 150
+		segmentOverflow: 10
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Button$ButtonStyle: {
+	default: {
+		up: background_grey
+		down: blue
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.CheckBox$CheckBoxStyle: {
+	default: {
+		checkboxOn: blue
+		checkboxOff: background_grey
+		font: Press
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.Label$LabelStyle: {
+	default: {
+		font: Press
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: transparent_background
+		knob: white
+		knobBefore: white
+	}
+	healthbarBackground: {
+		background: transparent_background
+		knob: white
+		knobBefore: white
+	}
+	border: {
+		background: transparent_with_border
+		knob: transparent_background
+		knobBefore: transparent_background
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {
+	default: {
+		corner: transparent_with_border
+		hScroll: background_grey
+		hScrollKnob: blue
+		vScroll: background_grey
+		vScrollKnob: blue
+	}
+	list: {
+		hScroll: background_grey
+		hScrollKnob: blue
+		vScroll: background_grey
+		vScrollKnob: blue
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextButton$TextButtonStyle: {
+	default: {
+		font: Press
+		up: background_grey
+		down: blue
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.TextTooltip$TextTooltipStyle: {
+	default: {
+		label: default
+	}
+}
+}

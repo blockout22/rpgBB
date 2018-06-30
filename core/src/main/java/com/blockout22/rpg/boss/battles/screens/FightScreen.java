@@ -62,9 +62,11 @@ public class FightScreen extends ScreenStage {
         mobName = new VisLabel(mob.getName());
         mobHealth = new VisProgressBar(0, mob.getStats().getMaxhealth(), 0.1f, false);
         mobHealth.setValue(mob.getStats().getCurrentHealth());
+        mobHealth.setAnimateDuration(1);
 
         playerHealth = new VisProgressBar(0, player.getStats().getMaxhealth(), 0.1f, false);
         playerHealth.setValue(player.getStats().getCurrentHealth());
+        playerHealth.setAnimateDuration(1);
 
         attackButton = new VisTextButton(Statics.getBundle().get("attack"));
         backConfirm = new VisTextButton(Statics.getBundle().get("backScreen"));

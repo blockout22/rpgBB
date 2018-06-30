@@ -14,7 +14,6 @@ public class MainMenuScreen extends ScreenStage {
 
     private VisTextButton play;
     private VisTextButton options;
-    private VisSlider uiScale;
     private VisLabel version;
 
     public MainMenuScreen(Player player) {
@@ -22,25 +21,15 @@ public class MainMenuScreen extends ScreenStage {
         play = new VisTextButton(Statics.getBundle().get("clickToPlay"));
         options = new VisTextButton(Statics.getBundle().get("options"));
         version = new VisLabel("Build: " + Statics.getVersion());
-        uiScale = new VisSlider(0.1f, 10f, 0.1f, false);
-        uiScale.setValue(Statics.getPreferences().getFloat(Statics.UI_SCALE));
 
-        version.setFontScale(0.6f);
+        play.getLabel().setFontScale(1f);
+
+//        version.setFontScale(0.13f);
 
         play.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 Statics.setScreen(Statics.GAME_SCREEN);
-            }
-        });
-
-        uiScale.addListener(new ChangeListener() {
-            @Override
-            public void changed(ChangeEvent event, Actor actor) {
-//                System.out.println("changed: " + uiScale.getValue());
-//                ScreenStage.getViewport().setMinWorldWidth(1920 / uiScale.getValue());
-//                ScreenStage.getViewport().setMinWorldHeight(1080 / uiScale.getValue());
-//                ScreenStage.getViewport().update((int)(Gdx.graphics.getWidth()* uiScale.getValue()), (int)(Gdx.graphics.getHeight() * uiScale.getValue()), true);
             }
         });
 

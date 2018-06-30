@@ -1,0 +1,48 @@
+
+rpgSkin.png
+size: 512,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Press
+  rotate: false
+  xy: 1, 69
+  size: 256, 256
+  orig: 256, 256
+  offset: 0, 0
+  index: -1
+background_grey
+  rotate: false
+  xy: 1, 1
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+blue
+  rotate: false
+  xy: 35, 35
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+transparent_background
+  rotate: false
+  xy: 259, 293
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+transparent_with_border
+  rotate: false
+  xy: 259, 259
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1
+white
+  rotate: false
+  xy: 1, 35
+  size: 32, 32
+  orig: 32, 32
+  offset: 0, 0
+  index: -1

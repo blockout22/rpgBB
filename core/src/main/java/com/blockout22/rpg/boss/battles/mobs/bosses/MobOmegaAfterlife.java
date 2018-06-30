@@ -9,7 +9,8 @@ public class MobOmegaAfterlife extends Mob{
     public MobOmegaAfterlife() {
         super("Omega Afterlife", new Stats(125, 50, 50, 50));
         setAttackSpeed(2500);
-        setRewardXp(200);
+//        setRewardXp(200);
+        calcRewardXpFromStats();
         setDefaultInfo();
 
 

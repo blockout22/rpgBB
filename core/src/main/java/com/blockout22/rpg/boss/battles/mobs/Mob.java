@@ -34,6 +34,12 @@ public abstract class Mob {
         }
     }
 
+    public void calcRewardXpFromStats()
+    {
+        long x = getStats().getMaxhealth() + (getStats().getAccuracy() / 2) + (getStats().getStrength()) + (getStats().getDodge() / 2);
+        setRewardXp(x);
+    }
+
     public void setRewardXp(long rewardXp) {
         this.rewardXp = rewardXp;
     }

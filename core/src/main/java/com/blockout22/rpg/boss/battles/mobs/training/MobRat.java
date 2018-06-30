@@ -8,7 +8,8 @@ public class MobRat extends Mob {
     public MobRat() {
         super("Rat", new Stats(5, 1, 2, 1));
         setAttackSpeed(5000);
-        setRewardXp(15);
+//        setRewardXp(15);
+        calcRewardXpFromStats();
         setDefaultInfo();
 //        setInfo("Attacks the player every " +  (getAttackSpeed() / 1000) + " seconds hitting a maximum of " + getStats().getStrength() + " and has " + getStats().getMaxhealth() + " Health.");
     }

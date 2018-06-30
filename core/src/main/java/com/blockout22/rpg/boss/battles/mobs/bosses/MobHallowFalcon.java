@@ -8,7 +8,8 @@ public class MobHallowFalcon extends Mob{
     public MobHallowFalcon() {
         super("The Hallow Falcon", new Stats(100, 50, 35, 45));
         setAttackSpeed(2500);
-        setRewardXp(150);
+        calcRewardXpFromStats();
+//        setRewardXp(150);
         setDefaultInfo();
     }
 }

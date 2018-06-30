@@ -2,16 +2,22 @@ package com.blockout22.rpg.boss.battles;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.ParticleEffect;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonValue;
 import com.kotcrab.vis.ui.VisUI;
 
 public class RPGBossBattles extends Game {
+
+    private Skin skin;
 
     private float R;
     private float G;
@@ -29,7 +35,13 @@ public class RPGBossBattles extends Game {
 
 	    //stop the back key doing anything (prevents some glitches in Libgdx)
 	    Gdx.input.setCatchBackKey(true);
-        Skin skin = new Skin(VisUI.SkinScale.X2.getSkinFile());
+//        skin = new Skin(VisUI.SkinScale.X2.getSkinFile());
+//        skin = new Skin(Gdx.files.internal("skins/rpgSkin.json"));
+        skin = new Skin(Gdx.files.internal("skins/visSkin/uiskin.json"));
+//        FileHandle file = Gdx.files.internal("skins/visSkin/test/test.json");
+//        System.out.println(file.path() + " : " + file.exists() + " : ");
+//        skin = new Skin(file);
+//        System.out.println(skin.getAtlas());
         VisUI.load(skin);
         Statics.init(this);
 
@@ -82,6 +94,7 @@ public class RPGBossBattles extends Game {
 	public void dispose () {
 //	    particleAtlas.dispose();
 //	    effect.dispose();
+        skin.dispose();
 	    VisUI.dispose();
 	    Statics.dispose();
 	}

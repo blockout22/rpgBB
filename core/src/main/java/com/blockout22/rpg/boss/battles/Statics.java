@@ -11,6 +11,7 @@ import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobHallowFalcon;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobOmegaAfterlife;
 import com.blockout22.rpg.boss.battles.mobs.training.MobRat;
+import com.blockout22.rpg.boss.battles.mobs.training.MobSkeleton;
 import com.blockout22.rpg.boss.battles.mobs.training.MobUnicorn;
 import com.blockout22.rpg.boss.battles.mobs.training.MobWorm;
 import com.blockout22.rpg.boss.battles.mobs.training.MobZombie;
@@ -22,6 +23,7 @@ import com.blockout22.rpg.boss.battles.screens.PlayerStatsScreen;
 import com.blockout22.rpg.boss.battles.screens.TrainingScreen;
 import com.blockout22.rpg.boss.battles.screens.MessageScreen;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
+import com.blockout22.rpg.boss.battles.screens.helper.UITester;
 
 import java.util.Locale;
 
@@ -29,13 +31,14 @@ public class Statics {
 
     private static int version = -1;
     private static boolean versionSet = false;
+    private static final boolean testUI = false;
 
     private static Game game;
     private static Preferences prefs;
     private static I18NBundle bundle;
 
     private static Player player;
-    public static MobData[] trainingMobs = new MobData[4];
+    public static MobData[] trainingMobs = new MobData[5];
     public static MobData[] bossMobs = new MobData[2];
 
     //change this to false for paid version
@@ -52,7 +55,8 @@ public class Statics {
             TRAINING_SCREEN,
             MESSAGE_SCREEN,
             PLAYER_STATS_SCREEN,
-            BOSS_BATTLE_SCREEN;
+            BOSS_BATTLE_SCREEN,
+            UI_TESTER;
 
     public static final String
             PLAYER_MAX_HEALTH_XP = "max-health",
@@ -80,10 +84,17 @@ public class Statics {
 //        System.out.println(getPreferences() == null);
         player = new Player();
 
+        if(testUI){
+            UI_TESTER = new UITester(player);
+            setScreen(UI_TESTER);
+            return;
+        }
+
         trainingMobs[0] = new MobData(false, new MobWorm());
         trainingMobs[1] = new MobData(true, new MobRat());
         trainingMobs[2] = new MobData(true, new MobZombie());
         trainingMobs[3] = new MobData(false, new MobUnicorn());
+        trainingMobs[4] = new MobData(true, new MobSkeleton());
 
         bossMobs[0] = new MobData(true, new MobHallowFalcon());
         bossMobs[1] = new MobData(false, new MobOmegaAfterlife());
@@ -172,12 +183,21 @@ public class Statics {
     }
 
     public static void dispose(){
+        prefs.flush();
+
+        if(testUI){
+            setScreen(UI_TESTER);
+            UI_TESTER.dispose();
+            return;
+        }
+
         MAIN_MENU.dispose();
+        OPTIONS_SCREEN.dispose();
         GAME_SCREEN.dispose();
         TRAINING_SCREEN.dispose();
         MESSAGE_SCREEN.dispose();
         PLAYER_STATS_SCREEN.dispose();
         BOSS_BATTLE_SCREEN.dispose();
-        prefs.flush();
+
     }
 }

@@ -7,7 +7,8 @@ public class MobUnicorn extends Mob {
     public MobUnicorn() {
         super("Unicorn", new Stats(17, 4, 5, 5));
         setAttackSpeed(3000);
-        setRewardXp(30);
+//        setRewardXp(30);
+        calcRewardXpFromStats();
         setDefaultInfo();
     }
 }
