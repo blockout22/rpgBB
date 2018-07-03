@@ -39,17 +39,13 @@ public class RPGBossBattles extends Game {
 //        skin = new Skin(Gdx.files.internal("skins/rpgSkin.json"));
         skin = new Skin(Gdx.files.internal("skins/visSkin/uiskin.json"));
 //        FileHandle file = Gdx.files.internal("skins/visSkin/test/test.json");
-//        System.out.println(file.path() + " : " + file.exists() + " : ");
 //        skin = new Skin(file);
-//        System.out.println(skin.getAtlas());
         VisUI.load(skin);
         Statics.init(this);
 
         R = (float)Math.random();
         G = (float)Math.random();
         B = (float)Math.random();
-
-//        System.out.println("R: " + R   + " G: " + G + " B: " + B);
 
 //        effect = new ParticleEffect();
 //        effect.load(Gdx.files.internal("particles/hover"), Gdx.files.internal("particles"));

@@ -45,8 +45,6 @@ public class MobOmegaAfterlife extends Mob{
 //                                cancel();
 //                            }
 //
-//                            System.out.println("Looping Task");
-//
 //                        }
 //                    }, 0.5f, 0.1f, 1000);
 //                }

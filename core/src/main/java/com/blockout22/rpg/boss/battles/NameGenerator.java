@@ -42,13 +42,10 @@ public class NameGenerator {
                 name += sufix[rand.nextInt(sufix.length)];
             }
 
-            System.out.println(i);
-
             if(removeDupes){
                 for (String n : nameList) {
                     if(n != null) {
                         if (n.equals(name)) {
-                            System.out.println("Remove Dupe: " + name + " : " + n);
 //                                i--;
                             continue;
                         }
@@ -58,8 +55,6 @@ public class NameGenerator {
 
             nameList[i] = name;
         }
-
-//        System.out.println("Max Names: " + ((prefix.length * names.length * sufix.length) + (prefix.length * names.length) + (names.length * sufix.length) + (names.length)));
         return nameList;
     }
 }
