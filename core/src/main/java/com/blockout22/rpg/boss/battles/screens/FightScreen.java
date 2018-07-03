@@ -49,12 +49,16 @@ public class FightScreen extends ScreenStage {
 
     private Stats mobStats = null;
 
+    private boolean hasMobDiedTask = false;
+
     public FightScreen(final Player player, final Mob mob){
         super(player);
         this.mob = mob;
         this.mobStats = mob.getStats();
         player.reset();
         mob.reset();
+
+        hasMobDiedTask = false;
 
         canVibrate = Statics.getPreferences().getBoolean(Statics.PLAYER_VIRBRATE_DAMAGE);
 
@@ -181,19 +185,22 @@ public class FightScreen extends ScreenStage {
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 Statics.setScreen(ms.setText(Statics.getBundle().get("diedText")));
             }else if(mob.isDead()){
-                Timer.schedule(new Timer.Task() {
-                    @Override
-                    public void run() {
-                        playerHealth.clearActions();
-                        mobHealth.clearActions();
-                        getPlayer().rewardXp(mob.getRewardXp());
-                        MessageScreen ms = (MessageScreen) Statics.MESSAGE_SCREEN;
-                        //go back a screen to prevent player from clicking back onto the fight screen
-                        Statics.backScreen();
-                        Statics.setScreen(ms.setText(Statics.getBundle().format("winText", mob.getRewardXp())));
+                if(!hasMobDiedTask) {
+                    Timer.schedule(new Timer.Task() {
+                        @Override
+                        public void run() {
+                            playerHealth.clearActions();
+                            mobHealth.clearActions();
+                            getPlayer().rewardXp(mob.getRewardXp());
+                            MessageScreen ms = (MessageScreen) Statics.MESSAGE_SCREEN;
+                            //go back a screen to prevent player from clicking back onto the fight screen
+                            Statics.backScreen();
+                            Statics.setScreen(ms.setText(Statics.getBundle().format("winText", mob.getRewardXp())));
 
-                    }
-                }, 0.50f);
+                        }
+                    }, 0.50f);
+                    hasMobDiedTask = true;
+                }
             }
         }
 

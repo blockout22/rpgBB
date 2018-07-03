@@ -92,6 +92,10 @@ public abstract class Mob {
         if(!this.isDead){
             if(m < chance) {
                 damage = r.nextInt((int) (getStats().strength + 1));
+                if(damage == 0){
+                    damage = 1;
+                }
+
                 if(hitCallback != null){
                     hitCallback.callback(damage, other);
                 }

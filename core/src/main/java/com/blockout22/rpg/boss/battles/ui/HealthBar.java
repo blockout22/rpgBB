@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
@@ -17,7 +18,7 @@ import com.kotcrab.vis.ui.widget.VisTable;
 public class HealthBar extends VisTable{
 
     private Stack stack;
-    private VisProgressBar bar, background, border;
+    private VisProgressBar foreground, background, border;
     private VisLabel label;
     private int labelValue = -1;
 
@@ -32,7 +33,7 @@ public class HealthBar extends VisTable{
         pixmap.dispose();
 
         fgStyle.background = fgDrawable;
-        bar = new VisProgressBar(min, max, stepSize, false, fgStyle);
+        foreground = new VisProgressBar(min, max, stepSize, false, fgStyle);
 
         pixmap = new Pixmap(1, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(new Color(1, 0, 0, 1));
@@ -47,18 +48,17 @@ public class HealthBar extends VisTable{
 
         background = new VisProgressBar(min, max, stepSize, false, bgStyle);
         border = new VisProgressBar(min, max, stepSize, false);
-        label = new VisLabel((int)bar.getValue() + "/" + (int)bar.getMaxValue());
+        label = new VisLabel((int)foreground.getValue() + "/" + (int)foreground.getMaxValue());
         label.setAlignment(Align.center);
 //        label.setFontScale(0.8f);
 
         stack = new Stack();
 
-        bar.setAnimateDuration(0.25f);
-//        background.setAnimateInterpolation(Interpolation.swing);
+        foreground.setAnimateDuration(0.25f);
         background.setAnimateDuration(1);
 
         stack.addActor(background);
-        stack.addActor(bar);
+        stack.addActor(foreground);
         stack.addActor(label);
         add(stack).fillX().expandX().padLeft(5).padRight(5).row();
 //        label.setColor(Color.BLACK);
@@ -69,25 +69,25 @@ public class HealthBar extends VisTable{
     @Override
     public void draw(Batch batch, float parentAlpha) {
         super.draw(batch, parentAlpha);
-        if(labelValue != (int)bar.getValue()){
-            labelValue = (int)bar.getVisualValue();
-            label.setText((int)labelValue + "/" + (int)bar.getMaxValue());
+        if(labelValue != (int)foreground.getValue()){
+            labelValue = (int)foreground.getVisualValue();
+            label.setText((int)labelValue + "/" + (int)foreground.getMaxValue());
         }
     }
 
     public void setRange(float min, float max){
-        bar.setRange(min, max);
+        foreground.setRange(min, max);
         background.setRange(min, max);
     }
 
     public void setValue(float value){
-        bar.setValue(value);
+        foreground.setValue(value);
         background.setValue(value);
     }
 
     public float getValue()
     {
-        return bar.getValue();
+        return foreground.getValue();
     }
 
     public void setBackgroundColor(Color backgroundColor){
