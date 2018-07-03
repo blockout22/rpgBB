@@ -10,6 +10,7 @@ import com.blockout22.rpg.boss.battles.mobs.MobData;
 import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobHallowFalcon;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobOmegaAfterlife;
+import com.blockout22.rpg.boss.battles.mobs.bosses.MobResurrector;
 import com.blockout22.rpg.boss.battles.mobs.training.MobRat;
 import com.blockout22.rpg.boss.battles.mobs.training.MobSkeleton;
 import com.blockout22.rpg.boss.battles.mobs.training.MobUnicorn;
@@ -39,7 +40,7 @@ public class Statics {
 
     private static Player player;
     public static MobData[] trainingMobs = new MobData[5];
-    public static MobData[] bossMobs = new MobData[2];
+    public static MobData[] bossMobs = new MobData[3];
 
     //change this to false for paid version
     public static final boolean isFree = false;
@@ -81,7 +82,6 @@ public class Statics {
 
         screenHistroy = new Array<ScreenStage>();
 
-//        System.out.println(getPreferences() == null);
         player = new Player();
 
         if(testUI){
@@ -98,6 +98,7 @@ public class Statics {
 
         bossMobs[0] = new MobData(true, new MobHallowFalcon());
         bossMobs[1] = new MobData(false, new MobOmegaAfterlife());
+        bossMobs[2] = new MobData(true, new MobResurrector());
 
         MAIN_MENU = new MainMenuScreen(player);
         OPTIONS_SCREEN = new OptionsScreen(player);
@@ -151,7 +152,6 @@ public class Statics {
     }
 
     public static void backScreen(){
-//        System.out.println(screenHistroy.size);
         if(screenHistroy.size > 1){
             ScreenStage s = screenHistroy.get(screenHistroy.size - 2);
             screenHistroy.removeIndex(screenHistroy.size - 1);

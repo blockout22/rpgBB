@@ -66,18 +66,18 @@ public class UITester extends ScreenStage {
 
     private void testHealthBar()
     {
-        final HealthBar hb = new HealthBar();
+        final HealthBar hb = new HealthBar(0, 100, 1);
         hb.setValue(100);
 
         Timer.schedule(new Timer.Task() {
             @Override
             public void run() {
                 hb.setValue(new Random().nextInt(100));
-                if(hb.getValue() <= 30){
-                    hb.setForegroundColor(Color.RED);
-                }else{
-                    hb.setForegroundColor(Color.GREEN);
-                }
+//                if(hb.getValue() <= 30){
+//                    hb.setForegroundColor(Color.RED);
+//                }else{
+//                    hb.setForegroundColor(Color.GREEN);
+//                }
             }
         }, 2, 2, 100);
 

@@ -69,7 +69,9 @@ com.badlogic.gdx.scenes.scene2d.ui.Window$WindowStyle: {
 },
 com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
 	default-horizontal: {background: progressbar, knob: progressbar-filled, knobBefore: progressbar-filled },
-	default-vertical: {background: progressbar-vertical, knob: progressbar-filled-vertical, knobBefore: progressbar-filled-vertical }
+	default-vertical: {background: progressbar-vertical, knob: progressbar-filled-vertical, knobBefore: progressbar-filled-vertical },
+    health-bar-foreground: {background: progressbar, knob: progressbar-filled, knobBefore: progressbar-filled},
+    health-bar-background: {background: progressbar, knob: progressbar-filled, knobBefore: progressbar-filled}
 },
 com.badlogic.gdx.scenes.scene2d.ui.Slider$SliderStyle: {
 	default-horizontal: {background: slider, knob: slider-knob, knobOver: slider-knob-over, knobDown: slider-knob-down, disabledKnob: slider-knob-disabled },

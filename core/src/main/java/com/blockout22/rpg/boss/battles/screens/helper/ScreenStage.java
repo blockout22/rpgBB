@@ -24,6 +24,7 @@ public class ScreenStage implements Screen {
     private final Player player;
 
     private Texture background;
+    private float scale = 3.0f;
 
     public ScreenStage(Player player){
         this.player = player;
@@ -34,7 +35,6 @@ public class ScreenStage implements Screen {
 //        }
 //
 //        float scale = Statics.getPreferences().getFloat(Statics.UI_SCALE);
-        float scale = 3.0f;
         viewport = new ExtendViewport(1920 / scale, 1080 / scale);
         stage = new Stage(viewport);
         rootTable = new VisTable();
@@ -96,8 +96,19 @@ public class ScreenStage implements Screen {
         stage.getBatch().setColor(Color.WHITE);
     }
 
+    boolean landscape = true;
     @Override
     public void resize(int width, int height) {
+        if(width > height){
+            if(!landscape){
+                landscape = true;
+            }
+        }else if(width < height){
+            if(landscape){
+                landscape = false;
+            }
+        }
+
         stage.getViewport().update(width, height, true);
     }
 

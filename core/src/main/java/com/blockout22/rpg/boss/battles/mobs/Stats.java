@@ -56,4 +56,31 @@ public class Stats {
     public long getCurrentHealth() {
         return currentHealth;
     }
+
+    /**
+     * returns true if all stats are the same
+     */
+    public boolean compare(Stats stats){
+        if(stats.getDodge() != getDodge()){
+            return false;
+        }
+
+        if(stats.getStrength() != getStrength()){
+            return false;
+        }
+
+        if(stats.getAccuracy() != getAccuracy()){
+            return false;
+        }
+
+        if(stats.getCurrentHealth() != getCurrentHealth()){
+            return false;
+        }
+
+        if(stats.getMaxhealth() != getMaxhealth()){
+            return false;
+        }
+
+        return true;
+    }
 }

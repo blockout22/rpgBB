@@ -1,19 +1,22 @@
 package com.blockout22.rpg.boss.battles.mobs;
 
+import com.blockout22.rpg.boss.battles.OnDeadCallback;
+import com.blockout22.rpg.boss.battles.Resurrection;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.SuccessfulHitCallback;
 
 import java.security.SecureRandom;
-import java.util.Random;
 
 public abstract class Mob {
 
-    private final Stats stats;
+    private Stats stats;
     private final String name;
     private boolean isDead = false;
     private SecureRandom r = new SecureRandom();
     private long rewardXp = 0;
     private SuccessfulHitCallback hitCallback = null;
+//    private Resurrection resurrection = null;
+    private OnDeadCallback onDeadCallback;
 
     //how often the mob will try to hit the player in milliseconds
     private long attackSpeed = -1;
@@ -22,6 +25,22 @@ public abstract class Mob {
     public Mob(String name, Stats stats){
         this.name = name;
         this.stats = stats;
+    }
+
+//    /**
+//     * gives the mob a resurrection property which will allow the mob to come back to life the set arguments
+//     * @param resurrection
+//     */
+//    public void setResurrection(Resurrection resurrection){
+//        this.resurrection = resurrection;
+//    }
+//
+//    public Resurrection getResurrection() {
+//        return resurrection;
+//    }
+
+    public void setOnDeadCallback(OnDeadCallback onDeadCallback){
+        this.onDeadCallback = onDeadCallback;
     }
 
     public void setDefaultInfo()
@@ -37,6 +56,12 @@ public abstract class Mob {
     public void calcRewardXpFromStats()
     {
         long x = getStats().getMaxhealth() + (getStats().getAccuracy() / 2) + (getStats().getStrength()) + (getStats().getDodge() / 2);
+        setRewardXp(x);
+    }
+
+    public void calcRewardXpFromStats(Stats stats)
+    {
+        long x = stats.getMaxhealth() + (stats.getAccuracy() / 2) + (stats.getStrength()) + (stats.getDodge() / 2);
         setRewardXp(x);
     }
 
@@ -86,7 +111,14 @@ public abstract class Mob {
     public void damage(long amt){
         this.stats.setCurrentHealth(this.stats.getCurrentHealth() - amt);
         if(stats.getCurrentHealth() <= 0){
-            setDead(true);
+//            if(resurrection != null){
+//                Stats stats = getResurrection().getStats();
+//                setStats(stats);
+//
+//                setResurrection(null);
+//            }else {
+                setDead(true);
+//            }
         }
     }
 
@@ -99,6 +131,11 @@ public abstract class Mob {
     }
 
     private void setDead(boolean value){
+        if(value){
+            if(onDeadCallback != null){
+                value =  onDeadCallback.action();
+            }
+        }
         this.isDead = value;
     }
 
@@ -108,6 +145,10 @@ public abstract class Mob {
 
     public long getAttackSpeed() {
         return attackSpeed;
+    }
+
+    public void setStats(Stats stats){
+        this.stats = stats;
     }
 
     public Stats getStats() {

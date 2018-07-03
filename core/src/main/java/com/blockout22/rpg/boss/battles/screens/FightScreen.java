@@ -9,12 +9,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.Timer;
 import com.blockout22.rpg.boss.battles.FloatingText;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
 import com.blockout22.rpg.boss.battles.mobs.Player;
+import com.blockout22.rpg.boss.battles.mobs.Stats;
 import com.blockout22.rpg.boss.battles.screens.helper.BackListener;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
+import com.blockout22.rpg.boss.battles.ui.HealthBar;
 import com.kotcrab.vis.ui.widget.VisDialog;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
@@ -25,8 +28,9 @@ public class FightScreen extends ScreenStage {
     private Mob mob;
 
     private Table bottomBar;
-    private VisLabel mobName, mobHealthLabel, playerHealthLabel;
-    private VisProgressBar mobHealth, playerHealth;
+    private VisLabel mobName; // mobHealthLabel, playerHealthLabel;
+//    private VisProgressBar mobHealth, playerHealth;
+    private HealthBar mobHealth, playerHealth;
     private VisTextButton attackButton, backConfirm;
     private VisDialog dialog;
 
@@ -43,9 +47,12 @@ public class FightScreen extends ScreenStage {
     private long lastPlayerHealth;
     private long lastMobHealth;
 
+    private Stats mobStats = null;
+
     public FightScreen(final Player player, final Mob mob){
         super(player);
         this.mob = mob;
+        this.mobStats = mob.getStats();
         player.reset();
         mob.reset();
 
@@ -55,18 +62,19 @@ public class FightScreen extends ScreenStage {
         mobStack = new Stack();
         playerStack = new Stack();
 
-        mobHealthLabel = new VisLabel(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
-
-        playerHealthLabel = new VisLabel(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+//        mobHealthLabel = new VisLabel(mobStats.getCurrentHealth() + "/" + mobStats.getMaxhealth());
+        mobHealth = new HealthBar(0, mobStats.getMaxhealth(), 0.1f);
+//        playerHealthLabel = new VisLabel(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+        playerHealth = new HealthBar(0, getPlayer().getStats().getMaxhealth(), 0.1f);
 
         mobName = new VisLabel(mob.getName());
-        mobHealth = new VisProgressBar(0, mob.getStats().getMaxhealth(), 0.1f, false);
-        mobHealth.setValue(mob.getStats().getCurrentHealth());
-        mobHealth.setAnimateDuration(1);
+//        mobHealth = new VisProgressBar(0, mobStats.getMaxhealth(), 0.1f, false);
+        mobHealth.setValue(mobStats.getCurrentHealth());
+//        mobHealth.setAnimateDuration(1);
 
-        playerHealth = new VisProgressBar(0, player.getStats().getMaxhealth(), 0.1f, false);
+//        playerHealth = new VisProgressBar(0, player.getStats().getMaxhealth(), 0.1f, false);
         playerHealth.setValue(player.getStats().getCurrentHealth());
-        playerHealth.setAnimateDuration(1);
+//        playerHealth.setAnimateDuration(1);
 
         attackButton = new VisTextButton(Statics.getBundle().get("attack"));
         backConfirm = new VisTextButton(Statics.getBundle().get("backScreen"));
@@ -102,13 +110,13 @@ public class FightScreen extends ScreenStage {
         });
 
         mobStack.add(mobHealth);
-        mobStack.add(mobHealthLabel);
+//        mobStack.add(mobHealthLabel);
 
-        mobHealthLabel.setAlignment(Align.center);
+//        mobHealthLabel.setAlignment(Align.center);
 
         playerStack.add(playerHealth);
-        playerStack.add(playerHealthLabel);
-        playerHealthLabel.setAlignment(Align.center);
+//        playerStack.add(playerHealthLabel);
+//        playerHealthLabel.setAlignment(Align.center);
 
         rootTable.add(mobName).top().pad(5).row();
         rootTable.add(mobStack).top().fillX().expand().pad(5).row();
@@ -133,7 +141,7 @@ public class FightScreen extends ScreenStage {
         lastPlayerHit = System.currentTimeMillis();
 
         lastPlayerHealth = getPlayer().getStats().getCurrentHealth();
-        lastMobHealth = mob.getStats().getCurrentHealth();
+        lastMobHealth = mobStats.getCurrentHealth();
     }
 
     @Override
@@ -173,13 +181,19 @@ public class FightScreen extends ScreenStage {
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 Statics.setScreen(ms.setText(Statics.getBundle().get("diedText")));
             }else if(mob.isDead()){
-                playerHealth.clearActions();
-                mobHealth.clearActions();
-                getPlayer().rewardXp(mob.getRewardXp());
-                MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
-                //go back a screen to prevent player from clicking back onto the fight screen
-                Statics.backScreen();
-                Statics.setScreen(ms.setText(Statics.getBundle().format("winText",mob.getRewardXp())));
+                Timer.schedule(new Timer.Task() {
+                    @Override
+                    public void run() {
+                        playerHealth.clearActions();
+                        mobHealth.clearActions();
+                        getPlayer().rewardXp(mob.getRewardXp());
+                        MessageScreen ms = (MessageScreen) Statics.MESSAGE_SCREEN;
+                        //go back a screen to prevent player from clicking back onto the fight screen
+                        Statics.backScreen();
+                        Statics.setScreen(ms.setText(Statics.getBundle().format("winText", mob.getRewardXp())));
+
+                    }
+                }, 0.50f);
             }
         }
 
@@ -229,16 +243,35 @@ public class FightScreen extends ScreenStage {
         //checks if health is less than 30%
         if((Float.valueOf(getPlayer().getStats().getCurrentHealth()) / Float.valueOf(getPlayer().getStats().getMaxhealth()) * 100) <= 30){
             playerLowHp = true;
-            playerHealthLabel.setColor(Color.RED);
+//            playerHealthLabel.setColor(Color.RED);
+        }else{
+//            playerHealthLabel.setColor(Color.WHITE);
+            playerHealth.clearActions();
+            playerHealth.setColor(Color.WHITE);
+            playerLowHp = false;
         }
 
-        if((Float.valueOf(mob.getStats().getCurrentHealth()) / Float.valueOf(mob.getStats().getMaxhealth()) * 100) <= 30){
+        if((Float.valueOf(mobStats.getCurrentHealth()) / Float.valueOf(mobStats.getMaxhealth()) * 100) <= 30){
             mobLowHp = true;
-            mobHealthLabel.setColor(Color.RED);
+//            mobHealthLabel.setColor(Color.RED);
+        }else{
+//            mobHealthLabel.setColor(Color.WHITE);
+            mobHealth.clearActions();
+            mobHealth.setColor(Color.WHITE);
+            mobLowHp = false;
         }
+
+        //check if mob has changed its stats during the fight
+        if(!mobStats.compare(mob.getStats())){
+            mobStats = mob.getStats();
+            mobHealth.setRange(0, mobStats.getMaxhealth());
+            mobHealth.setValue(mobStats.getCurrentHealth());
+        }
+
+
 
         //checks if the player just lost some health
-        if(lastPlayerHealth > getPlayer().getStats().getCurrentHealth()){
+        if(lastPlayerHealth != getPlayer().getStats().getCurrentHealth()){
             if(canVibrate){
                 Gdx.input.vibrate(100);
             }
@@ -250,12 +283,12 @@ public class FightScreen extends ScreenStage {
         }
 
         //checks if the mob just lost some health
-        if(lastMobHealth > mob.getStats().getCurrentHealth()){
-            mobHealth.setValue(mob.getStats().getCurrentHealth());
+        if(lastMobHealth != mobStats.getCurrentHealth()){
+            mobHealth.setValue(mobStats.getCurrentHealth());
 
             mobHealthChanged();
 
-            lastMobHealth = mob.getStats().getCurrentHealth();
+            lastMobHealth = mobStats.getCurrentHealth();
         }
 
     }
@@ -281,28 +314,30 @@ public class FightScreen extends ScreenStage {
     private void playerHealthChanged(){
         long dmg = lastPlayerHealth - getPlayer().getStats().getCurrentHealth();
 
-        FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
+        //NOTE this method isn't being called if damage is 0
+        FloatingText t = new FloatingText(dmg != 0 ? dmg < 0 ? "+" : "-" + dmg : Statics.getBundle().get("missed"), 1000);
         t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.2f);
         t.setDeltaY(50);
         t.animate();
         getStage().addActor(t);
 
-        if (dmg > 0) {
-            playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
+        if (dmg != 0) {
+//            playerHealthLabel.setText(getPlayer().getStats().getCurrentHealth() + "/" + getPlayer().getStats().getMaxhealth());
         }
     }
 
     private void mobHealthChanged()
     {
-        long dmg = lastMobHealth - mob.getStats().getCurrentHealth();
-
-        FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
+        long dmg = lastMobHealth - mobStats.getCurrentHealth();
+        FloatingText t = new FloatingText(dmg != 0 ? dmg < 0 ? "+"  + -dmg : "-" + dmg : Statics.getBundle().get("missed"), 1000);
+        //NOTE this method isn't being called if damage is 0
+//        FloatingText t = new FloatingText(dmg > 0 ? "-" + dmg : Statics.getBundle().get("missed"), 1000);
         t.setPosition(getViewport().getWorldWidth() * 0.9f, getViewport().getWorldHeight() * 0.9f);
         t.setDeltaY(50);
         t.animate();
         getStage().addActor(t);
-        if(dmg > 0){
-            mobHealthLabel.setText(mob.getStats().getCurrentHealth() + "/" + mob.getStats().getMaxhealth());
+        if(dmg != 0){
+//            mobHealthLabel.setText(mobStats.getCurrentHealth() + "/" + mobStats.getMaxhealth());
         }
     }
 }

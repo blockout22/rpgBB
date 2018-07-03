@@ -34,7 +34,6 @@ public class DesktopLauncher {
             InputStream file = DesktopLauncher.class.getResourceAsStream("/version");
             BufferedReader br;
             if(file != null) {
-//            System.out.println("File: " + file.getAbsolutePath());
                 br = new BufferedReader(new InputStreamReader(file));
             }else{
                 br = new BufferedReader(new FileReader(new File("version")));
@@ -55,8 +54,8 @@ public class DesktopLauncher {
     private static LwjglApplicationConfiguration getDefaultConfiguration() {
         LwjglApplicationConfiguration configuration = new LwjglApplicationConfiguration();
         configuration.title = "BossBattles";
-        configuration.width = 640;
-        configuration.height = 480;
+        configuration.width = 1920 / 3;
+        configuration.height = 1920 / 3;
         for (int size : new int[] { 128, 64, 32, 16 }) {
 //            configuration.addIcon("libgdx" + size + ".png", FileType.Internal);
         }

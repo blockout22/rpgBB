@@ -1,8 +1,14 @@
 package com.blockout22.rpg.boss.battles.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Batch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.ui.ProgressBar;
 import com.badlogic.gdx.scenes.scene2d.ui.Stack;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
+import com.badlogic.gdx.utils.Align;
 import com.kotcrab.vis.ui.VisUI;
 import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisProgressBar;
@@ -13,40 +19,70 @@ public class HealthBar extends VisTable{
     private Stack stack;
     private VisProgressBar bar, background, border;
     private VisLabel label;
+    private int labelValue = -1;
 
-    public HealthBar(){
-        bar = new VisProgressBar(1, 100, 1, false);
-        background = new VisProgressBar(1, 100, 1, false);
-        border = new VisProgressBar(1, 100, 1, false);
-        label = new VisLabel("0/100");
-//        label.setFontScale(0.5f);
+    public HealthBar(float min, float max, float stepSize){
+        ProgressBar.ProgressBarStyle fgStyle = VisUI.getSkin().get("health-bar-foreground", ProgressBar.ProgressBarStyle.class);
 
-        label.setColor(Color.BLACK);
+        Pixmap pixmap = new Pixmap(32, 32, Pixmap.Format.RGBA8888);
+        pixmap.setColor(new Color(1, 0, 0, 0.0f));
+        pixmap.fill();
 
-        setBackgroundColor(Color.RED);
-        border.setColor(Color.GRAY);
+        TextureRegionDrawable fgDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        pixmap.dispose();
+
+        fgStyle.background = fgDrawable;
+        bar = new VisProgressBar(min, max, stepSize, false, fgStyle);
+
+        pixmap = new Pixmap(1, 32, Pixmap.Format.RGBA8888);
+        pixmap.setColor(new Color(1, 0, 0, 1));
+        pixmap.fill();
+
+        TextureRegionDrawable bgDrawable = new TextureRegionDrawable(new TextureRegion(new Texture(pixmap)));
+        pixmap.dispose();
+
+        ProgressBar.ProgressBarStyle bgStyle = VisUI.getSkin().get("health-bar-background", ProgressBar.ProgressBarStyle.class);
+        bgStyle.knobBefore = bgDrawable;
+        bgStyle.knob = bgDrawable;
+
+        background = new VisProgressBar(min, max, stepSize, false, bgStyle);
+        border = new VisProgressBar(min, max, stepSize, false);
+        label = new VisLabel((int)bar.getValue() + "/" + (int)bar.getMaxValue());
+        label.setAlignment(Align.center);
+//        label.setFontScale(0.8f);
 
         stack = new Stack();
 
-//        ProgressBar.ProgressBarStyle style = VisUI.getSkin().get("healthbarBackground", ProgressBar.ProgressBarStyle.class);
-//        background.setStyle(style);
-//        border.setStyle(VisUI.getSkin().get("border", ProgressBar.ProgressBarStyle.class));
-
-        background.setAnimateDuration(2);
+        bar.setAnimateDuration(0.25f);
+//        background.setAnimateInterpolation(Interpolation.swing);
+        background.setAnimateDuration(1);
 
         stack.addActor(background);
         stack.addActor(bar);
-        stack.addActor(border);
+        stack.addActor(label);
         add(stack).fillX().expandX().padLeft(5).padRight(5).row();
-        label.setFontScale(0.2f);
+//        label.setColor(Color.BLACK);
 
-        add(label).pad(5).left();
+//        add(label).pad(5).left();
+    }
+
+    @Override
+    public void draw(Batch batch, float parentAlpha) {
+        super.draw(batch, parentAlpha);
+        if(labelValue != (int)bar.getValue()){
+            labelValue = (int)bar.getVisualValue();
+            label.setText((int)labelValue + "/" + (int)bar.getMaxValue());
+        }
+    }
+
+    public void setRange(float min, float max){
+        bar.setRange(min, max);
+        background.setRange(min, max);
     }
 
     public void setValue(float value){
         bar.setValue(value);
         background.setValue(value);
-        label.setText((int)bar.getValue() + "/" + (int)bar.getMaxValue());
     }
 
     public float getValue()
@@ -55,10 +91,10 @@ public class HealthBar extends VisTable{
     }
 
     public void setBackgroundColor(Color backgroundColor){
-        background.setColor(backgroundColor);
+//        background.setColor(backgroundColor);
     }
 
     public void setForegroundColor(Color foregroundColor) {
-        bar.setColor(foregroundColor);
+//        bar.setColor(foregroundColor);
     }
 }
