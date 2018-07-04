@@ -21,11 +21,17 @@ import com.blockout22.rpg.boss.battles.screens.GameScreen;
 import com.blockout22.rpg.boss.battles.screens.MainMenuScreen;
 import com.blockout22.rpg.boss.battles.screens.OptionsScreen;
 import com.blockout22.rpg.boss.battles.screens.PlayerStatsScreen;
+import com.blockout22.rpg.boss.battles.screens.SplashScreen;
 import com.blockout22.rpg.boss.battles.screens.TrainingScreen;
 import com.blockout22.rpg.boss.battles.screens.MessageScreen;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
 import com.blockout22.rpg.boss.battles.screens.helper.UITester;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Locale;
 
 public class Statics {
@@ -47,8 +53,9 @@ public class Statics {
 
     private static Array<ScreenStage> screenHistroy;
 
-    public static String BACKGROUND_CLOUDS = "background.png";
+    public static String BACKGROUND = "background.png";
 
+    private static ScreenStage SPLASH_SCREEN;
     public static ScreenStage
             MAIN_MENU,
             OPTIONS_SCREEN,
@@ -59,6 +66,7 @@ public class Statics {
             BOSS_BATTLE_SCREEN,
             UI_TESTER;
 
+    //Properties
     public static final String
             PLAYER_MAX_HEALTH_XP = "max-health",
             PLAYER_ACCURACY_XP = "accuracy",
@@ -68,7 +76,11 @@ public class Statics {
             PLAYER_XP_BANK = "xp-bank",
             UI_SCALE = "ui-scale",
             PLAYER_STATS_UI_ORIENTATION = "stats-orientation",
-            PLAYER_VIRBRATE_DAMAGE = "vibrate-damage";
+
+            //Options
+            PLAYER_VIRBRATE_DAMAGE = "vibrate-damage",
+            SHOW_SPLASH = "show-splash";
+
 
     public static void init(Game game){
         Statics.game = game;
@@ -108,11 +120,21 @@ public class Statics {
         PLAYER_STATS_SCREEN = new PlayerStatsScreen(player);
         BOSS_BATTLE_SCREEN = new BossBattleScreen(player);
 
+        SPLASH_SCREEN = new SplashScreen();
+
         setScreen(MAIN_MENU);
+        if(Statics.getPreferences().getBoolean(Statics.SHOW_SPLASH)) {
+            setScreen(SPLASH_SCREEN);
+        }
     }
 
     private static void setupPreferences()
     {
+        //checks if value exists, if false then create it
+        if(!Statics.getPreferences().contains(Statics.SHOW_SPLASH)){
+            Statics.getPreferences().putBoolean(Statics.SHOW_SPLASH, true);
+        }
+
         if(!Statics.getPreferences().contains(Statics.PLAYER_VIRBRATE_DAMAGE)){
             Statics.getPreferences().putBoolean(Statics.PLAYER_VIRBRATE_DAMAGE, true);
         }
@@ -121,7 +143,6 @@ public class Statics {
             Statics.getPreferences().putBoolean(Statics.PLAYER_STATS_UI_ORIENTATION, false);
         }
 
-        //checks if value exists, if false then create it
         if (!Statics.getPreferences().contains(Statics.PLAYER_MAX_HEALTH_XP)) {
             XpData tmp = new XpData();
             Statics.getPreferences().putLong(Statics.PLAYER_MAX_HEALTH_XP, tmp.levelToXp(10));
@@ -177,6 +198,26 @@ public class Statics {
         }
     }
 
+    public static boolean hasUpdate() throws IOException {
+        String VERSION_URL = "https://raw.githubusercontent.com/SeekGeneration/RPG-Boss-Battles/master/version";
+        URL url = new URL(VERSION_URL);
+        BufferedReader in = new BufferedReader(new InputStreamReader(url.openStream()));
+
+        String line = in.readLine().trim();
+        if(line == null){
+            return false;
+        }
+
+        in.close();
+
+        int ver = Integer.valueOf(line);
+        if(getVersion() != ver){
+            return true;
+        }
+
+        return false;
+    }
+
     public static I18NBundle getBundle(){ return bundle; }
     public static Preferences getPreferences(){
         return prefs;
@@ -190,6 +231,8 @@ public class Statics {
             UI_TESTER.dispose();
             return;
         }
+
+        SPLASH_SCREEN.dispose();
 
         MAIN_MENU.dispose();
         OPTIONS_SCREEN.dispose();

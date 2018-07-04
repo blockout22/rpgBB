@@ -10,6 +10,8 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
+import java.io.IOException;
+
 public class MainMenuScreen extends ScreenStage {
 
     private VisTextButton play;
@@ -20,7 +22,7 @@ public class MainMenuScreen extends ScreenStage {
         super(player);
         play = new VisTextButton(Statics.getBundle().get("clickToPlay"));
         options = new VisTextButton(Statics.getBundle().get("options"));
-        version = new VisLabel("Build: " + Statics.getVersion());
+        version = new VisLabel(Statics.getBundle().get("build") + " " + Statics.getVersion());
 
         play.getLabel().setFontScale(1f);
 
@@ -45,6 +47,22 @@ public class MainMenuScreen extends ScreenStage {
 //        rootTable.add(uiScale).fillX().pad(5).row();
         rootTable.add(version).pad(5).bottom().left().expand();
 //        rootTable.add().expand();
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                boolean update = false;
+                try {
+                    update = Statics.hasUpdate();
+                } catch (IOException e) {
+                    update = false;
+                }
+
+                if(update){
+                    version.setText(version.getText() + " [" + Statics.getBundle().get("newUpdate") + "]");
+                }
+            }
+        }).start();
     }
 
     @Override

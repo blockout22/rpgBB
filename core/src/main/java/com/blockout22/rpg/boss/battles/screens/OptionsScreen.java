@@ -18,8 +18,8 @@ import com.kotcrab.vis.ui.widget.VisTextButton;
 public class OptionsScreen extends ScreenStage{
 
     private VisLabel title;
-    private VisLabel damageVibrateLabel;
-    private VisCheckBox damageVibrate;
+    private VisLabel damageVibrateLabel, splashscreenLabel;
+    private VisCheckBox damageVibrate, splashscreen;
     private VisTextButton back;
 
     private VisTable scrollTable;
@@ -29,8 +29,13 @@ public class OptionsScreen extends ScreenStage{
         super(player);
 
         title = new VisLabel(Statics.getBundle().get("optionsTitle"));
-        damageVibrateLabel = new VisLabel(Statics.getBundle().get("damageVibrate"));
+
+        damageVibrateLabel = new VisLabel(Statics.getBundle().get("damageVibrate") + " ");
         damageVibrate = new VisCheckBox("", Statics.getPreferences().getBoolean(Statics.PLAYER_VIRBRATE_DAMAGE));
+
+        splashscreenLabel = new VisLabel(Statics.getBundle().get("showSplash") + " ");
+        splashscreen = new VisCheckBox("", Statics.getPreferences().getBoolean(Statics.SHOW_SPLASH));
+
         back = new VisTextButton(Statics.getBundle().get("backScreen"));
 
         scrollTable = new VisTable();
@@ -45,6 +50,14 @@ public class OptionsScreen extends ScreenStage{
             }
         });
 
+        splashscreen.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                Statics.getPreferences().putBoolean(Statics.SHOW_SPLASH, splashscreen.isChecked());
+                Statics.getPreferences().flush();
+            }
+        });
+
         back.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -53,9 +66,12 @@ public class OptionsScreen extends ScreenStage{
         });
 
         if(Gdx.app.getType() != Application.ApplicationType.Desktop) {
-            scrollTable.add(damageVibrateLabel);
-            scrollTable.add(damageVibrate);
+            scrollTable.add(damageVibrateLabel).pad(5);
+            scrollTable.add(damageVibrate).row();
         }
+
+        scrollTable.add(splashscreenLabel).pad(5);
+        scrollTable.add(splashscreen);
 
         rootTable.add(title).pad(5).row();
         rootTable.addSeparator();

@@ -6,10 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.Viewport;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.kotcrab.vis.ui.widget.VisTable;
@@ -42,7 +39,7 @@ public class ScreenStage implements Screen {
         stage.addActor(rootTable);
 //        stage.setDebugAll(true);
 
-        background = new Texture(Gdx.files.internal(Statics.BACKGROUND_CLOUDS));
+        background = new Texture(Gdx.files.internal(Statics.BACKGROUND));
     }
 
     public void setOnBackListener(BackListener listener){

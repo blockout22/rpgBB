@@ -13,6 +13,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.blockout22.rpg.boss.battles.screens.SplashScreen;
 import com.kotcrab.vis.ui.VisUI;
 
 public class RPGBossBattles extends Game {
