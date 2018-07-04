@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.screens;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
@@ -10,17 +11,23 @@ import com.kotcrab.vis.ui.widget.VisLabel;
 import com.kotcrab.vis.ui.widget.VisSlider;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 public class MainMenuScreen extends ScreenStage {
 
     private VisTextButton play;
+    private VisTextButton playstore;
     private VisTextButton options;
     private VisLabel version;
 
     public MainMenuScreen(Player player) {
         super(player);
         play = new VisTextButton(Statics.getBundle().get("clickToPlay"));
+        playstore = new VisTextButton(Statics.getBundle().get("getOnAndroid"));
         options = new VisTextButton(Statics.getBundle().get("options"));
         version = new VisLabel(Statics.getBundle().get("build") + " " + Statics.getVersion());
 
@@ -35,6 +42,15 @@ public class MainMenuScreen extends ScreenStage {
             }
         });
 
+        playstore.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String link = "https://play.google.com/store/apps/details?id=com.blockout22.rpg.boss.battles";
+//                    Desktop.getDesktop().browse(new URL(link).toURI());
+                Gdx.net.openURI(link);
+            }
+        });
+
         options.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -43,6 +59,12 @@ public class MainMenuScreen extends ScreenStage {
         });
 
         rootTable.add(play).fillX().pad(5).row();
+
+        if(Gdx.app.getType() != Application.ApplicationType.Android)
+        {
+            rootTable.add(playstore).fillX().pad(5).row();
+        }
+
         rootTable.add(options).fillX().pad(5).row();
 //        rootTable.add(uiScale).fillX().pad(5).row();
         rootTable.add(version).pad(5).bottom().left().expand();

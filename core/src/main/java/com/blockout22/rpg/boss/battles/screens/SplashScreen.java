@@ -1,8 +1,10 @@
 package com.blockout22.rpg.boss.battles.screens;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.blockout22.rpg.boss.battles.Statics;
@@ -18,8 +20,9 @@ public class SplashScreen extends ScreenStage{
 
     private boolean isDisposed = false;
     private boolean isAlive = true;
-    private long delay = 2000;
+    private long delay = 3000;
     private long startTime;
+    private boolean fading = false;
 
     public SplashScreen() {
         super(null);
@@ -33,6 +36,12 @@ public class SplashScreen extends ScreenStage{
 
         rootTable.add(image).row();
         rootTable.add(text);
+
+        image.setColor(new Color(1, 1, 1, 0));
+        text.setColor(new Color(1, 1, 1, 0));
+
+        image.addAction(Actions.sequence(Actions.fadeIn(0.5f)));
+        text.addAction(Actions.sequence(Actions.fadeIn(0.5f)));
     }
 
     @Override
@@ -44,9 +53,15 @@ public class SplashScreen extends ScreenStage{
         }
 
         if(TimeUtils.timeSinceMillis(startTime) > delay){
-            dispose();
-            isAlive = false;
-            Statics.backScreen();
+            if(!fading){
+                image.addAction(Actions.sequence(Actions.fadeOut(1)));
+                text.addAction(Actions.sequence(Actions.fadeOut(1)));
+            }
+            if(TimeUtils.timeSinceMillis(startTime) > delay + 1500) {
+                dispose();
+                isAlive = false;
+                Statics.backScreen();
+            }
         }
     }
 

@@ -27,6 +27,8 @@
 -dontwarn com.badlogic.gdx.physics.box2d.utils.Box2DBuild
 -dontwarn com.badlogic.gdx.jnigen.BuildTarget*
 -dontwarn com.badlogic.gdx.graphics.g2d.freetype.FreetypeBuild
+-dontwarn com.kotcrab.vis.ui.widget.file.FileUtils
+
 
 -keep class com.badlogic.gdx.controllers.android.AndroidControllers
 
