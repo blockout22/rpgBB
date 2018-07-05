@@ -11,6 +11,7 @@ import com.blockout22.rpg.boss.battles.mobs.Player;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobHallowFalcon;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobOmegaAfterlife;
 import com.blockout22.rpg.boss.battles.mobs.bosses.MobResurrector;
+import com.blockout22.rpg.boss.battles.mobs.training.MobMinotaur;
 import com.blockout22.rpg.boss.battles.mobs.training.MobRat;
 import com.blockout22.rpg.boss.battles.mobs.training.MobSkeleton;
 import com.blockout22.rpg.boss.battles.mobs.training.MobUnicorn;
@@ -45,7 +46,7 @@ public class Statics {
     private static I18NBundle bundle;
 
     private static Player player;
-    public static MobData[] trainingMobs = new MobData[5];
+    public static MobData[] trainingMobs = new MobData[6];
     public static MobData[] bossMobs = new MobData[3];
 
     //change this to false for paid version
@@ -107,6 +108,7 @@ public class Statics {
         trainingMobs[2] = new MobData(true, new MobZombie());
         trainingMobs[3] = new MobData(false, new MobUnicorn());
         trainingMobs[4] = new MobData(true, new MobSkeleton());
+        trainingMobs[5] = new MobData(false, new MobMinotaur());
 
         bossMobs[0] = new MobData(true, new MobHallowFalcon());
         bossMobs[1] = new MobData(false, new MobOmegaAfterlife());
@@ -230,6 +232,14 @@ public class Statics {
             setScreen(UI_TESTER);
             UI_TESTER.dispose();
             return;
+        }
+
+        for(int i = 0; i < trainingMobs.length; i++){
+            trainingMobs[i].dispose();
+        }
+
+        for(int i = 0; i < bossMobs.length; i++){
+            bossMobs[i].dispose();
         }
 
         SPLASH_SCREEN.dispose();

@@ -3,13 +3,13 @@ apply plugin: 'com.android.application'
 android {
   buildToolsVersion '25.0.2'
   compileSdkVersion 27
-    buildTypes{
-        release{
-            minifyEnabled true
-            proguardFile getDefaultProguardFile("proguard-android-optimize.txt");
-            proguardFile "proguard-project.txt";
-        }
-    }
+//    buildTypes{
+//        release{
+//            minifyEnabled true
+//            proguardFile getDefaultProguardFile("proguard-android-optimize.txt");
+//            proguardFile "proguard-project.txt";
+//        }
+//    }
 
   sourceSets {
     main {

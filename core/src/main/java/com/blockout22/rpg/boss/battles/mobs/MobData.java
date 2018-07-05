@@ -14,6 +14,11 @@ public class MobData {
         return mob;
     }
 
+    public void dispose()
+    {
+        mob.dispose();
+    }
+
     public boolean isFree() {
         return isFree;
     }

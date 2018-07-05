@@ -34,6 +34,7 @@ public class HealthBar extends VisTable{
 
         fgStyle.background = fgDrawable;
         foreground = new VisProgressBar(min, max, stepSize, false, fgStyle);
+        foreground.setColor(Color.GREEN);
 
         pixmap = new Pixmap(1, 32, Pixmap.Format.RGBA8888);
         pixmap.setColor(new Color(1, 0, 0, 1));

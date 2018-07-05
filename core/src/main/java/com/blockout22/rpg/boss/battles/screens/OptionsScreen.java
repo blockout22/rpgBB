@@ -40,7 +40,9 @@ public class OptionsScreen extends ScreenStage{
 
         scrollTable = new VisTable();
         scrollPane = new VisScrollPane(scrollTable);
-        scrollPane.layout();
+        scrollPane.setFadeScrollBars(false);
+        scrollPane.setScrollbarsOnTop(false);
+//        scrollPane.layout();
 
         damageVibrate.addListener(new ChangeListener() {
             @Override
@@ -72,10 +74,11 @@ public class OptionsScreen extends ScreenStage{
 
         scrollTable.add(splashscreenLabel).pad(5);
         scrollTable.add(splashscreen);
+        scrollTable.add().expand();
 
         rootTable.add(title).pad(5).row();
         rootTable.addSeparator();
-        rootTable.add(scrollPane).row();
+        rootTable.add(scrollPane).fillY().row();
         rootTable.add(back).expand().bottom().right();
     }
 }

@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.mobs;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.XpData;
 
@@ -12,7 +13,7 @@ public class Player extends Mob{
     private XpData accuracyLevel, strengthLevel, dodgeLevel, healthLevel;
 
     public Player() {
-        super("Player", new Stats(0, 0, 0, 0));
+        super("Player", new Stats(0, 0, 0, 0), new Texture("square.png"));
 
         accuracyLevel = new XpData();
         strengthLevel = new XpData();

@@ -1,19 +1,20 @@
 package com.blockout22.rpg.boss.battles.mobs.bosses;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.blockout22.rpg.boss.battles.OnDeadCallback;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
 import com.blockout22.rpg.boss.battles.mobs.Stats;
 
 public class MobResurrector extends Mob{
 
-    private Stats defaultStats;
+    private final Stats defaultStats, resStats;
     private boolean hasDied = false;
 
     public MobResurrector() {
-        super("Resurrector", new Stats(100, 50, 50, 50));
+        super("Resurrector", new Stats(100, 50, 50, 50), new Texture("badlogic.jpg"));
 
         defaultStats = getStats();
-        final Stats resStats = new Stats(250, 60, 75, 55);
+        resStats = new Stats(250, 60, 75, 55);
         setAttackSpeed(2500);
         calcRewardXpFromStats(resStats);
         setDefaultInfo();
@@ -39,5 +40,13 @@ public class MobResurrector extends Mob{
 
 //        Resurrection res = new Resurrection(resStats);
 //        setResurrection(res);
+    }
+
+    @Override
+    public void reset() {
+        setStats(defaultStats);
+        hasDied = false;
+        resStats.setCurrentHealth(resStats.getMaxhealth());
+        super.reset();
     }
 }

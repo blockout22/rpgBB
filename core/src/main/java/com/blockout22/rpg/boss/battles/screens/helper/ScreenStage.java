@@ -5,10 +5,13 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.blockout22.rpg.boss.battles.Statics;
 import com.blockout22.rpg.boss.battles.mobs.Player;
+import com.kotcrab.vis.ui.widget.VisImage;
 import com.kotcrab.vis.ui.widget.VisTable;
 
 public class ScreenStage implements Screen {
@@ -40,6 +43,8 @@ public class ScreenStage implements Screen {
 //        stage.setDebugAll(true);
 
         background = new Texture(Gdx.files.internal(Statics.BACKGROUND));
+        TextureRegionDrawable drawable = new TextureRegionDrawable(new TextureRegion(background));
+        rootTable.setBackground(drawable);
     }
 
     public void setOnBackListener(BackListener listener){
@@ -84,10 +89,10 @@ public class ScreenStage implements Screen {
         }
 
         stage.act();
-        stage.getBatch().setProjectionMatrix(viewport.getCamera().combined);
-        stage.getBatch().begin();
-        stage.getBatch().draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldWidth());
-        stage.getBatch().end();
+//        stage.getBatch().setProjectionMatrix(stage.getViewport().getCamera().combined);
+//        stage.getBatch().begin();
+//        stage.getBatch().draw(background, 0, 0, stage.getViewport().getWorldWidth(), stage.getViewport().getWorldWidth());
+//        stage.getBatch().end();
         stage.draw();
 
         stage.getBatch().setColor(Color.WHITE);
@@ -98,10 +103,12 @@ public class ScreenStage implements Screen {
     public void resize(int width, int height) {
         if(width > height){
             if(!landscape){
+//                stage.setViewport(new ExtendViewport(1920 / scale, 1080 / scale));
                 landscape = true;
             }
         }else if(width < height){
             if(landscape){
+//                stage.setViewport(new ExtendViewport(1080 / scale, 1920 / scale));
                 landscape = false;
             }
         }

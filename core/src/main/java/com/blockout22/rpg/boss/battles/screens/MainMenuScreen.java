@@ -21,6 +21,7 @@ public class MainMenuScreen extends ScreenStage {
 
     private VisTextButton play;
     private VisTextButton playstore;
+    private VisTextButton upgrade;
     private VisTextButton options;
     private VisLabel version;
 
@@ -28,6 +29,7 @@ public class MainMenuScreen extends ScreenStage {
         super(player);
         play = new VisTextButton(Statics.getBundle().get("clickToPlay"));
         playstore = new VisTextButton(Statics.getBundle().get("getOnAndroid"));
+        upgrade = new VisTextButton(Statics.getBundle().get("upgrade"));
         options = new VisTextButton(Statics.getBundle().get("options"));
         version = new VisLabel(Statics.getBundle().get("build") + " " + Statics.getVersion());
 
@@ -51,6 +53,15 @@ public class MainMenuScreen extends ScreenStage {
             }
         });
 
+        upgrade.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                String link = "https://play.google.com/store/apps/details?id=com.blockout22.rpg.boss.battles";
+//                    Desktop.getDesktop().browse(new URL(link).toURI());
+                Gdx.net.openURI(link);
+            }
+        });
+
         options.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
@@ -63,6 +74,10 @@ public class MainMenuScreen extends ScreenStage {
         if(Gdx.app.getType() != Application.ApplicationType.Android)
         {
             rootTable.add(playstore).fillX().pad(5).row();
+        }
+
+        if(Statics.isFree){
+            rootTable.add(upgrade).fillX().pad(5).row();
         }
 
         rootTable.add(options).fillX().pad(5).row();

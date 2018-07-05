@@ -19,12 +19,13 @@ import com.blockout22.rpg.boss.battles.screens.helper.BackListener;
 import com.blockout22.rpg.boss.battles.screens.helper.ScreenStage;
 import com.blockout22.rpg.boss.battles.ui.HealthBar;
 import com.kotcrab.vis.ui.widget.VisDialog;
+import com.kotcrab.vis.ui.widget.VisImage;
 import com.kotcrab.vis.ui.widget.VisLabel;
-import com.kotcrab.vis.ui.widget.VisProgressBar;
 import com.kotcrab.vis.ui.widget.VisTextButton;
 
 public class FightScreen extends ScreenStage {
 
+    private FightScreenOverlay overlay;
     private Mob mob;
 
     private Table bottomBar;
@@ -33,6 +34,8 @@ public class FightScreen extends ScreenStage {
     private HealthBar mobHealth, playerHealth;
     private VisTextButton attackButton, backConfirm;
     private VisDialog dialog;
+
+    private VisImage mobImage, playerImage;
 
     private boolean canVibrate = false;
 
@@ -53,6 +56,7 @@ public class FightScreen extends ScreenStage {
 
     public FightScreen(final Player player, final Mob mob){
         super(player);
+        overlay = new FightScreenOverlay(player, mob);
         this.mob = mob;
         this.mobStats = mob.getStats();
         player.reset();
@@ -84,6 +88,9 @@ public class FightScreen extends ScreenStage {
         backConfirm = new VisTextButton(Statics.getBundle().get("backScreen"));
 
         dialog = new VisDialog(Statics.getBundle().get("areYouSure"));
+
+        mobImage = new VisImage(mob.getImage());
+        playerImage = new VisImage(getPlayer().getImage());
 
         attackButton.addListener(new ChangeListener() {
             @Override
@@ -123,7 +130,8 @@ public class FightScreen extends ScreenStage {
 //        playerHealthLabel.setAlignment(Align.center);
 
         rootTable.add(mobName).top().pad(5).row();
-        rootTable.add(mobStack).top().fillX().expand().pad(5).row();
+        rootTable.add(mobStack).top().fillX().pad(5).row();
+        rootTable.add(overlay).grow().left().row();
         rootTable.add(playerStack).fillX().pad(5).row();
         rootTable.add(bottomBar).fillX();
         bottomBar.add(attackButton).center();
@@ -184,6 +192,8 @@ public class FightScreen extends ScreenStage {
                 Statics.backScreen();
                 MessageScreen ms = (MessageScreen)Statics.MESSAGE_SCREEN;
                 Statics.setScreen(ms.setText(Statics.getBundle().get("diedText")));
+
+                dispose();
             }else if(mob.isDead()){
                 if(!hasMobDiedTask) {
                     Timer.schedule(new Timer.Task() {
@@ -197,6 +207,7 @@ public class FightScreen extends ScreenStage {
                             Statics.backScreen();
                             Statics.setScreen(ms.setText(Statics.getBundle().format("winText", mob.getRewardXp())));
 
+                            dispose();
                         }
                     }, 0.50f);
                     hasMobDiedTask = true;
@@ -279,6 +290,12 @@ public class FightScreen extends ScreenStage {
 
         //checks if the player just lost some health
         if(lastPlayerHealth != getPlayer().getStats().getCurrentHealth()){
+            boolean lower = getPlayer().getStats().getCurrentHealth() - lastPlayerHealth < 0 ? true : false;
+
+            if(lower){
+                overlay.damagePlayer();
+            }
+
             if(canVibrate){
                 Gdx.input.vibrate(100);
             }
@@ -291,6 +308,14 @@ public class FightScreen extends ScreenStage {
 
         //checks if the mob just lost some health
         if(lastMobHealth != mobStats.getCurrentHealth()){
+
+            boolean lower = mob.getStats().getCurrentHealth() - lastMobHealth < 0 ? true : false;
+
+            if(lower){
+                overlay.damageMob();
+            }else{
+                overlay.healMob();
+            }
             mobHealth.setValue(mobStats.getCurrentHealth());
 
             mobHealthChanged();

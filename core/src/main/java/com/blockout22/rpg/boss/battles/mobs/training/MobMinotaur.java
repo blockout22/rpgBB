@@ -4,11 +4,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
 import com.blockout22.rpg.boss.battles.mobs.Stats;
 
-public class MobSkeleton extends Mob {
-    public MobSkeleton() {
-        super("Skeleton", new Stats(20, 5, 6, 5), new Texture("badlogic.jpg"));
+public class MobMinotaur extends Mob{
+    public MobMinotaur() {
+        super("Minotaur", new Stats(45, 12, 14, 10), new Texture("square.png"));
         setAttackSpeed(3000);
-//        setRewardXp(25);
         calcRewardXpFromStats();
         setDefaultInfo();
     }

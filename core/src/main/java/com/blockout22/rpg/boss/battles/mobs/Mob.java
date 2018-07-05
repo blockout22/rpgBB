@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.mobs;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.blockout22.rpg.boss.battles.OnDeadCallback;
 import com.blockout22.rpg.boss.battles.Resurrection;
 import com.blockout22.rpg.boss.battles.Statics;
@@ -18,16 +19,28 @@ public abstract class Mob {
 //    private Resurrection resurrection = null;
     private OnDeadCallback onDeadCallback;
 
+    private Texture image;
+
     //how often the mob will try to hit the player in milliseconds
     private long attackSpeed = -1;
     private String info = "This is suppose to have information about the mob you clicked on!";
 
-    public Mob(String name, Stats stats){
+    public Mob(String name, Stats stats, Texture image){
         this.name = name;
         this.stats = stats;
+        this.image = image;
     }
 
-//    /**
+    public Texture getImage() {
+        return image;
+    }
+
+    public void dispose()
+    {
+        image.dispose();
+    }
+
+    //    /**
 //     * gives the mob a resurrection property which will allow the mob to come back to life the set arguments
 //     * @param resurrection
 //     */
@@ -132,6 +145,7 @@ public abstract class Mob {
     public void reset(){
         this.stats.setCurrentHealth(this.stats.getMaxhealth());
         setDead(false);
+        System.out.println("Called");
     }
 
     private void setDead(boolean value){

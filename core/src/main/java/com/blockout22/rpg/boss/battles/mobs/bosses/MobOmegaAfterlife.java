@@ -1,5 +1,6 @@
 package com.blockout22.rpg.boss.battles.mobs.bosses;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Timer;
 import com.blockout22.rpg.boss.battles.SuccessfulHitCallback;
 import com.blockout22.rpg.boss.battles.mobs.Mob;
@@ -7,7 +8,7 @@ import com.blockout22.rpg.boss.battles.mobs.Stats;
 
 public class MobOmegaAfterlife extends Mob{
     public MobOmegaAfterlife() {
-        super("Omega Afterlife", new Stats(125, 50, 50, 50));
+        super("Omega Afterlife", new Stats(125, 50, 50, 50), new Texture("badlogic.jpg"));
         setAttackSpeed(2500);
 //        setRewardXp(200);
         calcRewardXpFromStats();
